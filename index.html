@@ -31,8 +31,8 @@ header.top{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:18px 
 .tab[aria-selected="true"]{background:var(--green);color:#fff}
 .tab:focus-visible,.btn:focus-visible,.seg input:focus-visible+span,input:focus-visible,select:focus-visible{outline:2px solid var(--green);outline-offset:2px}
 main{padding:24px clamp(16px,4vw,40px) 48px}
-#work{display:grid;grid-template-columns:minmax(300px,420px) minmax(0,1fr);gap:32px;align-items:start}
-@media (max-width:900px){#work{grid-template-columns:1fr}}
+#work,.grid2{display:grid;grid-template-columns:minmax(300px,420px) minmax(0,1fr);gap:32px;align-items:start}
+@media (max-width:900px){#work,.grid2{grid-template-columns:1fr}}
 form{display:flex;flex-direction:column;gap:18px}
 fieldset{border:1px solid var(--line);border-radius:14px;padding:16px 16px 18px;margin:0;background:var(--surface);display:grid;gap:12px}
 legend{font:italic 400 19px/1 Lora,Georgia,serif;color:var(--green);padding:0 6px}
@@ -60,11 +60,15 @@ label.f input,label.f select,select#pacSel{width:100%;padding:10px 12px;border:1
 @media (max-width:900px){.prevwrap{position:static;max-height:none}}
 .prevlabel{font:italic 400 17px Lora,Georgia,serif;color:var(--muted);margin:0 0 10px}
 /* paper: always a white document */
-#paper{background:#fff;color:#222;max-width:700px;margin:0 auto;box-shadow:0 1px 2px rgba(40,50,44,.08),0 8px 30px rgba(40,50,44,.10);position:relative;padding-bottom:80px;font-family:Poppins,sans-serif;font-size:13px;line-height:1.62;border-radius:2px;overflow:hidden}
+.paper{background:#fff;color:#222;max-width:700px;margin:0 auto;box-shadow:0 1px 2px rgba(40,50,44,.08),0 8px 30px rgba(40,50,44,.10);position:relative;padding-bottom:80px;font-family:Poppins,sans-serif;font-size:13px;line-height:1.62;border-radius:2px;overflow:hidden}
 .ph-ct{position:relative;height:150px}
 .ph-line{position:absolute;left:0;right:0;top:48px;height:1.5px;background:var(--blush)}
 .ph-box{position:absolute;left:15.5%;right:15.5%;top:0;height:150px;background:#55675B;border-radius:0 0 22px 22px;text-align:center;color:#ECDFD9}
 .ph-t{font:italic 400 64px/1 Lora,serif;padding-top:40px}
+.ph-box.rec{color:#fff}
+.ph-rt{font:400 32px/1.1 Poppins,sans-serif;padding-top:48px}
+.ph-rn{font:400 17px Poppins,sans-serif;margin-top:10px}
+.pb p.lbl{margin:14px 0 2px}
 .ph-s{letter-spacing:.36em;font-size:12px;margin-top:10px}
 .ph-ad{position:relative;text-align:center;color:#55675B;padding-top:66px;height:215px}
 .ph-at{font:400 56px/1 Lora,serif}
@@ -97,6 +101,27 @@ label.f input,label.f select,select#pacSel{width:100%;padding:10px 12px;border:1
 label.btn{display:inline-block}
 #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:12px;font-size:14px;max-width:90vw;z-index:9}
 @media (prefers-reduced-motion:no-preference){.tab,.btn,.seg span{transition:background .15s,color .15s}}
+.stack{display:grid;gap:12px}
+.chk{display:flex;gap:8px;align-items:center;font-size:14px}
+.chk input{width:18px;height:18px;accent-color:var(--green)}
+details.cfg{border:1px solid var(--line);border-radius:14px;padding:12px 16px;background:var(--surface);display:grid;gap:10px}
+details.cfg[open]{padding-bottom:16px}
+details.cfg>*:not(summary){margin-top:10px}
+summary{cursor:pointer;font:italic 400 19px Lora,Georgia,serif;color:var(--green)}
+.sigprev{max-width:240px;max-height:90px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px;display:block}
+.pb.rb{padding-top:40px}
+.sg1{text-align:center;margin-top:40px}
+.sg1 img{max-height:70px;max-width:230px;display:block;margin:0 auto 4px}
+.sg1 .sgsp{display:block;height:60px}
+.sg1 span{display:block;border-top:1.2px solid #222;width:60%;margin:0 auto 8px}
+.sg1 div{font-size:12px;color:#5a5a5a}
+.sg1 div:first-of-type{font-size:13px;color:#222}
+.reg{margin-top:40px;max-width:1000px}
+.rt{width:100%;border-collapse:collapse;font-size:14px}
+.rt th{text-align:left;font-weight:500;color:var(--muted);font-size:13px;padding:8px;border-bottom:1px solid var(--line)}
+.rt td{padding:8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.btn.sm{padding:6px 12px;font-size:13px}
+#rList{overflow-x:auto}
 #login{max-width:400px;margin:8vh auto;padding:28px;background:var(--surface);border:1px solid var(--line);border-radius:16px;display:grid;gap:14px}
 #login h2{margin:0;font:italic 400 30px Lora,Georgia,serif;color:var(--green)}
 #login form{gap:12px}
@@ -110,6 +135,7 @@ label.btn{display:inline-block}
   <nav class="tabs" role="tablist">
     <button class="tab" role="tab" data-tab="novo" aria-selected="true">Contrato novo</button>
     <button class="tab" role="tab" data-tab="renova" aria-selected="false">Renovação</button>
+    <button class="tab" role="tab" data-tab="rec" aria-selected="false">Recibo</button>
     <button class="tab" role="tab" data-tab="pac" aria-selected="false">Pacientes</button>
   </nav>
   <button type="button" class="btn ghost" id="sair" hidden>Sair</button>
@@ -164,8 +190,59 @@ label.btn{display:inline-block}
       <button type="button" class="btn ghost" id="limpar">Limpar e começar outro</button>
     </div>
   </form>
-  <section class="prevwrap" aria-label="Prévia do documento"><p class="prevlabel">Prévia do documento</p><div id="paper"></div></section>
+  <section class="prevwrap" aria-label="Prévia do documento"><p class="prevlabel">Prévia do documento</p><div id="paper" class="paper"></div></section>
 </div>
+<section id="recView" hidden>
+ <div class="grid2">
+  <form id="rform" onsubmit="return false">
+    <fieldset>
+      <legend>Paciente</legend>
+      <label class="f" id="rPacWrap" hidden>Escolher paciente salva<select id="rPacSel"></select></label>
+      <label class="f">Nome completo do paciente<input id="rNome" data-k="nome" autocomplete="off"></label>
+      <label class="f">CPF do paciente<input id="rCpf" data-k="cpf" inputmode="numeric" placeholder="000.000.000-00"></label>
+      <label class="chk"><input type="checkbox" data-k="outro"> Quem pagou foi outra pessoa</label>
+      <div id="rPag" hidden class="stack"><label class="f">Nome de quem pagou<input data-k="pagNome" autocomplete="off"></label><label class="f">CPF de quem pagou<input data-k="pagCpf" inputmode="numeric" placeholder="000.000.000-00"></label></div>
+    </fieldset>
+    <fieldset>
+      <legend>Referente a</legend>
+      <div class="seg"><label><input type="radio" name="r_tipo" data-k="tipo" value="avulsa"><span>Consulta avulsa</span></label><label><input type="radio" name="r_tipo" data-k="tipo" value="plano"><span>Plano (contrato)</span></label></div>
+      <p class="groupl">Modalidade</p>
+      <div class="seg"><label><input type="radio" name="r_mod" data-k="mod" value="online"><span>On-line</span></label><label><input type="radio" name="r_mod" data-k="mod" value="gyn"><span>Presencial Goiânia</span></label><label><input type="radio" name="r_mod" data-k="mod" value="rv"><span>Presencial Rio Verde</span></label></div>
+      <div id="rAvulsa"><label class="f">Data da consulta<input type="date" data-k="dataCons"></label></div>
+      <div id="rPacote" class="stack">
+        <div class="seg"><label><input type="radio" name="r_plano" data-k="plano" value="tri"><span>Trimestral</span></label><label><input type="radio" name="r_plano" data-k="plano" value="sem"><span>Semestral</span></label></div>
+        <label class="f">Data da contratação<input type="date" data-k="dataCt"></label>
+        <p class="hint">Um recibo só, com o valor total do plano, mesmo se ela parcelar.</p>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Pagamento</legend>
+      <label class="f">Valor (R$)<input data-k="valor" inputmode="decimal" placeholder="220,00"></label>
+      <div class="seg"><label><input type="radio" name="r_forma" data-k="forma" value="pix"><span>À vista, PIX</span></label><label><input type="radio" name="r_forma" data-k="forma" value="dinheiro"><span>À vista, dinheiro</span></label><label><input type="radio" name="r_forma" data-k="forma" value="credito"><span>Cartão de crédito (Asaas)</span></label></div>
+      <label class="f">Data de emissão<input type="date" data-k="dataEm"></label>
+      <label class="f">Nº do recibo<input id="rNum" type="number" min="1" data-k="num"></label>
+    </fieldset>
+    <details class="cfg">
+      <summary>Meus dados do recibo</summary>
+      <p class="hint">Preencha uma vez. Vale para todos os recibos.</p>
+            <label class="f">Começar a numeração a partir de<input id="cIni" type="number" min="1" placeholder="1"></label>
+      <p class="hint">Se o seu último recibo no software antigo foi o 57, coloque 58 para continuar a sequência.</p>
+      <button type="button" class="btn ghost" id="cSave">Salvar meus dados</button>
+      <p class="groupl">Assinatura</p>
+      <p class="hint">Envie uma vez só: ela fica salva na sua conta e entra em todos os recibos.</p>
+      <img id="cSigPrev" class="sigprev" alt="Sua assinatura" hidden>
+      <div class="pa"><label class="btn ghost" for="cSig" tabindex="0">Enviar assinatura</label><input type="file" id="cSig" accept="image/png,image/jpeg" hidden><button type="button" class="btn ghost danger" id="cSigDel" hidden>Remover assinatura</button></div>
+    </details>
+    <div class="actions">
+      <p id="rstatus" class="status" role="status"></p>
+      <button type="button" class="btn" id="rdl">Baixar recibo em PDF</button>
+      <button type="button" class="btn ghost" id="rlimpar">Limpar e começar outro</button>
+    </div>
+  </form>
+  <section class="prevwrap" aria-label="Prévia do recibo"><p class="prevlabel">Prévia do recibo</p><div id="rpaper" class="paper"></div></section>
+ </div>
+ <div class="reg"><div class="pvh"><h2>Recibos emitidos</h2><input id="rBusca" type="search" placeholder="Buscar por nome ou nº" aria-label="Buscar recibo"></div><div id="rList"></div></div>
+</section>
 <section id="pacView" hidden>
   <div class="pvh"><h2>Pacientes</h2><input id="busca" type="search" placeholder="Buscar pelo nome" aria-label="Buscar paciente"><button type="button" class="btn" id="addAntiga">Cadastrar paciente antiga</button></div>
   <div id="pacList"></div>
@@ -338,7 +415,7 @@ function renderPreview(){
 }
 
 /* ===== pdf ===== */
-function makePDF(blocks, tipo){
+function makePDF(blocks, tipo, opts={}){
   const {jsPDF}=window.jspdf; const doc=new jsPDF({unit:'pt',format:'a4',compress:true});
   [['pr','Poppins','normal'],['pb','Poppins','bold'],['pi','Poppins','italic'],['lr','Lora','normal'],['li','Lora','italic']].forEach(([k,n,s])=>{doc.addFileToVFS(k+'.ttf',ASSETS[k]);doc.addFont(k+'.ttf',n,s);});
   const GREEN=[85,103,91], CREAM=[236,223,217], BLUSH=[215,181,171], INK=[33,33,33];
@@ -348,10 +425,14 @@ function makePDF(blocks, tipo){
   const spaced=(t,y,col,size,cs)=>{ fnt(); doc.setFontSize(size); doc.setTextColor(...col); const w=doc.getTextWidth(t)+cs*(t.length-1); doc.text(t,297.6-w/2,y,{charSpace:cs}); };
   function first(){
     doc.setDrawColor(...BLUSH); doc.setLineWidth(1.1); doc.line(0,39.6,595.3,39.6);
-    if(tipo==='contrato'){
+    if(tipo==='recibo'){
       doc.setFillColor(...GREEN); doc.roundedRect(92,-24,411,148,18,18,'F');
-      doc.setFont('Lora','italic'); doc.setFontSize(60); doc.setTextColor(...CREAM); doc.text('Contrato',297.6,86,{align:'center'});
-      spaced('PACOTE NUTRICIONAL DE CONSULTAS',109,CREAM,10.5,3.8);
+      fnt(); doc.setFontSize(27); doc.setTextColor(255,255,255); doc.text('Recibo de pagamento',297.6,72,{align:'center'});
+      doc.setFontSize(14); doc.text(opts.sub||'',297.6,100,{align:'center'});
+    } else if(tipo==='contrato'){
+      doc.setFillColor(...GREEN); doc.roundedRect(92,-24,411,148,18,18,'F');
+      doc.setFont('Lora','italic'); doc.setFontSize(60); doc.setTextColor(...CREAM); doc.text(tipo==='recibo'?'Recibo':'Contrato',297.6,86,{align:'center'});
+      spaced(opts.sub||'PACOTE NUTRICIONAL DE CONSULTAS',109,CREAM,10.5,3.8);
     } else {
       doc.setFont('Lora','normal'); doc.setFontSize(52); doc.setTextColor(...GREEN); doc.text('Termo aditivo',297.6,92,{align:'center'});
       fnt(0,1); doc.setFontSize(25); doc.text('Renovação de Contrato',297.6,124,{align:'center'});
@@ -360,7 +441,7 @@ function makePDF(blocks, tipo){
     logo();
   }
   function band(){ doc.setFillColor(238,238,238); doc.rect(0,0,595.3,49,'F'); doc.setDrawColor(...GREEN); doc.setLineWidth(1); doc.line(0,49.5,595.3,49.5); logo(); }
-  first(); let y = tipo==='contrato'?168:186;
+  first(); let y = tipo==='aditivo'?186:(tipo==='recibo'?190:168);
   const newPage=()=>{ doc.addPage(); band(); y=TOP2; };
   doc.setFontSize(FS); fnt(); const SP=doc.getTextWidth(' ');
   function words(s){ const out=[]; let cur=null; s.split(/(\*\*)/).reduce((bold,part)=>{ if(part==='**') return !bold;
@@ -385,6 +466,10 @@ function makePDF(blocks, tipo){
     else if(b.t==='pu') para(b.x,L+64,W-64,'justify',10,3);
     else if(b.t==='li'){ if(y>BOTTOM) newPage(); fnt(); doc.setTextColor(...INK); doc.text('•',L+4,y); para(b.x,L+16,W-16,'left',b.last?10:1); }
     else if(b.t==='date'){ y+=4; para(b.x,L,W,'right',0); }
+    else if(b.t==='lbl'){ para('**'+b.x+'**',L,W,'left',2,2); }
+    else if(b.t==='sig1'){ y+=10; const c=297.6; if(b.img){ try{ const p=doc.getImageProperties(b.img); const w=Math.min(240,p.width*58/p.height), h=w*p.height/p.width; doc.addImage(b.img,'PNG',c-w/2,y,w,h); y+=h+4; }catch(e){ y+=56; } } else y+=56;
+      doc.setDrawColor(20,20,20); doc.setLineWidth(1); doc.line(c-120,y,c+120,y); y+=15; doc.setFontSize(FS);
+      b.lines.forEach((l,i)=>{ const bold=l.startsWith('**'); fnt(bold); doc.setFontSize(i?9:FS); doc.setTextColor(...(i?[90,90,90]:INK)); doc.text(l.replace(/\*\*/g,''),c,y,{align:'center'}); y+=i?13:15; }); doc.setFontSize(FS); }
     else if(b.t==='sign'){ y+=58; const cols=[[L,L+W/2-20,b.a,'Contratante'],[L+W/2+20,R,b.b,'Contratada']];
       doc.setDrawColor(20,20,20); doc.setLineWidth(1);
       cols.forEach(([x1,x2,nm,role])=>{ doc.line(x1,y,x2,y); fnt(); doc.setFontSize(FS); doc.setTextColor(...INK); const c=(x1+x2)/2; doc.text(nm.replace(/\*\*/g,''),c,y+15,{align:'center'}); doc.text(role,c,y+29,{align:'center'}); }); y+=40; }
@@ -422,7 +507,8 @@ function loadPatient(id){
   syncForm(); renderPreview();
 }
 function setTab(t){ S.tab=t; $$('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
-  $('#work').hidden = t==='pac'; $('#pacView').hidden = t!=='pac'; if(t!=='pac'){ syncForm(); renderPreview(); } else renderPacientes(); }
+  $('#work').hidden = t==='pac'||t==='rec'; $('#pacView').hidden = t!=='pac'; $('#recView').hidden = t!=='rec';
+  if(t==='pac') renderPacientes(); else if(t==='rec'){ renderRecSelect(); renderRecibos(); fillCfg(); rSync(); renderRecibo(); } else { syncForm(); renderPreview(); } }
 
 /* ===== pacientes ===== */
 function renderPacSelect(){ const sel=$('#pacSel'); const cur=S.pacId||'';
@@ -435,7 +521,7 @@ function renderPacientes(){ const box=$('#pacList'); const q=($('#busca').value|
   if(!list.length){ box.innerHTML = S.pacientes.length?'<p class="empty">Nenhum paciente com esse nome.</p>':'<p class="empty">Nenhum paciente salvo ainda. Quando você baixar o primeiro contrato, o cadastro da paciente aparece aqui, pronto pra renovar.</p>'; return; }
   box.innerHTML=list.map(p=>{ const h=p.historico||[]; const l=h[h.length-1];
     const info = l ? `${l.tipo==='contrato'?'Contrato':'Renovação'} ${l.plano==='tri'?'trimestral':'semestral'}, ${{online:'on-line',gyn:'presencial Goiânia',rv:'presencial Rio Verde'}[l.mod]}. Início em ${l.data?dBR(l.data):'—'}` : (p.dataOrig?`Contrato original assinado em ${dBR(p.dataOrig)}`:'Cadastrada sem contrato gerado aqui');
-    return `<article class="pc"><div><h3>${esc(p.nome||'Sem nome')}</h3><p>${esc(p.prof||'')}</p><p class="muted">${esc(info)}. ${h.length} ${h.length===1?'documento gerado':'documentos gerados'}.</p></div>
+    return `<article class="pc"><div><h3>${esc(p.nome||'Sem nome')}</h3><p>${esc(p.prof||'')}</p><p class="muted">${esc(info)}. ${h.length} ${h.length===1?'documento gerado':'documentos gerados'}${(p.recibos||[]).length?`, ${(p.recibos||[]).length} ${(p.recibos||[]).length===1?'recibo':'recibos'}`:''}.</p></div>
       <div class="pa"><button class="btn" data-act="renova" data-id="${esc(p.id)}">Renovar</button><button class="btn ghost" data-act="novo" data-id="${esc(p.id)}">Novo contrato</button>
       <button class="btn ghost danger" data-act="del" data-id="${esc(p.id)}">${S.del===p.id?'Confirmar exclusão':'Excluir'}</button></div></article>`; }).join(''); }
 async function pacAction(e){ const b=e.target.closest('button[data-act]'); if(!b) return; const id=b.dataset.id, act=b.dataset.act;
@@ -486,6 +572,137 @@ $('#salvarPac').addEventListener('click',saveOnly);
 $('#addAntiga').addEventListener('click',()=>{ setTab('renova'); loadPatient(''); $('#nome').focus(); toast('Preencha os dados da paciente e a data do contrato original, depois clique em Salvar paciente.'); });
 $('#pacList').addEventListener('click',pacAction);
 $('#busca').addEventListener('input',renderPacientes);
+/* ===== recibos ===== */
+S.config={}; S.configId=null; S.rPacId=null;
+const rBlank=()=>({nome:'',cpf:'',outro:false,pagNome:'',pagCpf:'',tipo:'avulsa',mod:'online',dataCons:'',plano:'tri',parc:'1',parcTot:'3',dataCt:'',valor:'',forma:'pix',dataPag:todayISO(),num:'',dataEm:todayISO()});
+S.r=rBlank();
+function setRows(rows){
+  const cfg=rows.find(r=>r.kind==='config'); S.config=cfg||{}; S.configId=cfg?cfg.id:null;
+  S.pacientes=rows.filter(r=>r.kind!=='config');
+  renderPacSelect(); if(S.tab==='pac') renderPacientes(); if(S.tab==='rec'){ renderRecSelect(); renderRecibos(); rSync(); renderRecibo(); fillCfg(); }
+}
+const pad=n=>String(n).padStart(4,'0');
+function allRecibos(){ const out=[]; S.pacientes.forEach(p=>(p.recibos||[]).forEach(r=>out.push({...r,pacId:p.id,pacNome:p.nome}))); return out.sort((a,b)=>b.num-a.num); }
+function nextNum(){ const mx=allRecibos().reduce((a,r)=>Math.max(a,r.num||0),0); return Math.max(mx+1, parseInt(S.config.numInicial)||1); }
+const FORMAS={pix:'À vista, via PIX',dinheiro:'À vista, em dinheiro',credito:'Cartão de crédito, via plataforma Asaas',debito:'Cartão de débito',link:'Cartão de crédito, via plataforma Asaas'};
+const MODR={online:'on-line',gyn:'presencial',rv:'presencial'};
+function rBuild(r){
+  const miss=[]; const ph=l=>{miss.push(l); return `⟦${l}⟧`;}; const v=(x,l)=>(x&&String(x).trim())?String(x).trim():ph(l);
+  const valor=money(r.valor); const valorTxt = valor?`**R$ ${fmt(valor)} (${reais(valor)})**`:`**${ph('valor')}**`;
+  const n = r.plano==='tri'?3:6, nT = n===3?'3 (três)':'6 (seis)', plano = r.plano==='tri'?'trimestral':'semestral';
+  
+  const onde = r.mod==='online'?'on-line':(r.mod==='rv'?'presencial em Rio Verde/GO':'presencial em Goiânia/GO');
+  const ondeP = r.mod==='online'?'on-line':(r.mod==='rv'?'presenciais em Rio Verde/GO':'presenciais em Goiânia/GO');
+  let desc, servico;
+  if(r.tipo==='avulsa'){ desc=`à consulta nutricional ${onde} do dia **${r.dataCons?dBR(r.dataCons):ph('data da consulta')}**`; servico='Consulta com nutricionista'; }
+  else { desc=`ao plano nutricional ${plano} ${onde}, contratado em **${r.dataCt?dBR(r.dataCt):ph('data da contratação')}**`; servico=`Acompanhamento nutricional com ${nT} consultas com nutricionista`; }
+  const pac=v(r.nome,'nome do paciente'), cpf=v(r.cpf,'CPF do paciente');
+  let quem, favor='';
+  if(r.outro){ quem=`**${v(r.pagNome,'nome de quem pagou')}**, inscrito(a) no CPF sob o nº ${v(r.pagCpf,'CPF de quem pagou')}`; favor=`, relativo ao atendimento de **${pac}**, inscrito(a) no CPF sob o nº ${cpf}`; }
+  else quem=`**${pac}**, inscrito(a) no CPF sob o nº ${cpf}`;
+  const cid = r.mod==='rv'?'Rio Verde':'Goiânia';
+  const end = r.mod==='rv'?'Av. Presidente Vargas, nº 47, Setor Central, Rio Verde/GO':'Av. T-1, nº 2424, Setor Bueno, Goiânia/GO';
+  const num=parseInt(r.num)||0; if(!num) ph('número do recibo');
+  const B=[
+    {t:'p',x:`Recebi de ${quem}, a importância de ${valorTxt}, referente ${desc}${favor}.`},
+    {t:'lbl',x:'Descrição do serviço:'},{t:'p',x:servico},
+    {t:'lbl',x:'Forma de pagamento:'},{t:'p',x:FORMAS[r.forma]||FORMAS.pix},
+    {t:'date',x:`${cid}/GO, ${r.dataEm?dExt(r.dataEm):ph('data de emissão')}.`}
+  ];
+  B.push({t:'sig1',img:S.config.assinatura||null,lines:['**Mariana Oliveira Borges**','Nutricionista | CRN-1 nº 26082','CPF 025.814.411-43',end]});
+  return {blocks:B,miss:[...new Set(miss)],num,cid};
+}
+function renderRecibo(){
+  const {blocks,miss,num}=rBuild(S.r);
+  let html=`<div class="ph-ct"><div class="ph-line"></div><div class="ph-box rec"><div class="ph-rt">Recibo de pagamento</div><div class="ph-rn">Nº ${num?pad(num):'—'}</div></div></div><div class="pb rb">`;
+  for(const b of blocks){
+    if(b.t==='p') html+=`<p>${rich(b.x)}</p>`;
+    else if(b.t==='lbl') html+=`<p class="lbl"><strong>${esc(b.x)}</strong></p>`;
+    else if(b.t==='date') html+=`<p class="dt">${rich(b.x)}</p>`;
+    else if(b.t==='sig1') html+=`<div class="sg1">${b.img?`<img src="${b.img}" alt="">`:'<i class="sgsp"></i>'}<span></span>${b.lines.map(l=>`<div>${rich(l)}</div>`).join('')}</div>`;
+  }
+  html+=`</div><img class="pl" src="data:image/png;base64,${ASSETS.logo}" alt="">`;
+  $('#rpaper').innerHTML=html;
+  const st=$('#rstatus');
+  if(S.downloads===null){ st.className='status warn'; st.textContent='O download não funciona nesta visualização.'; }
+  else if(miss.length){ st.className='status warn'; st.textContent='Falta preencher: '+miss.join(', ')+'.'; }
+  else { st.className='status ok'; st.textContent = S.config.assinatura?'Tudo preenchido. O recibo já pode ser baixado.':'Tudo preenchido. Dica: cadastre sua assinatura em "Meus dados do recibo".'; }
+  $('#rdl').disabled=!!miss.length||S.downloads===null;
+}
+function rSync(){
+  const r=S.r;
+  $$('#rform [data-k]').forEach(el=>{ const k=el.dataset.k; if(el.type==='radio') el.checked=(el.value===r[k]); else if(el.type==='checkbox') el.checked=!!r[k]; else if(el.value!==String(r[k]??'')) el.value=r[k]??''; });
+  if(!r.num){ r.num=String(nextNum()); $('#rNum').value=r.num; }
+  $('#rPag').hidden=!r.outro; $('#rAvulsa').hidden=r.tipo!=='avulsa'; $('#rPacote').hidden=r.tipo==='avulsa';
+  $('#rPacSel').value=S.rPacId||'';
+}
+function rInput(e){
+  const el=e.target, k=el.dataset.k; if(!k) return;
+  let val = el.type==='checkbox'?el.checked:el.value;
+  if(k==='cpf'||k==='pagCpf'){ val=maskCPF(val); el.value=val; }
+  const prev=S.r[k]; S.r[k]=val;
+    rSync(); renderRecibo();
+}
+function renderRecSelect(){ const sel=$('#rPacSel'); const list=[...S.pacientes].sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR'));
+  sel.innerHTML='<option value="">Paciente novo</option>'+list.map(p=>`<option value="${esc(p.id)}">${esc(p.nome||'Sem nome')}</option>`).join(''); sel.value=S.rPacId||''; $('#rPacWrap').hidden=!S.col; }
+function rLoadPatient(id){
+  S.rPacId=id||null; const keep={num:'',dataPag:todayISO(),dataEm:todayISO()};
+  if(!id){ S.r=Object.assign(rBlank(),keep); }
+  else { const p=S.pacientes.find(x=>x.id===id); if(!p) return; const h=p.historico||[]; const last=h[h.length-1]; const ctList=h.filter(x=>x.tipo==='contrato'); const lastCt=ctList[ctList.length-1];
+    const lr=(p.recibos||[]).slice(-1)[0];
+    S.r=Object.assign(rBlank(),{nome:p.nome||'',cpf:p.cpf||''},
+      last?{mod:last.mod,plano:last.plano,valor:last.valor||'',tipo:'plano',dataCt:last.dataAss||''}:{},
+      lr?{outro:!!lr.outro,pagNome:lr.pagNome||'',pagCpf:lr.pagCpf||'',forma:lr.forma||'pix'}:{}, keep);
+  }
+  rSync(); renderRecibo();
+}
+async function rDownload(snapshot){
+  const r=snapshot||S.r; const {blocks,miss,num}=rBuild(r); if(miss.length) return;
+  if(!snapshot && allRecibos().some(x=>x.num===num)){ toast(`Já existe um recibo com o nº ${pad(num)}. Use outro número.`); return; }
+  const nome=(r.nome||'').trim(); const fn=`Recibo ${pad(num)} - ${nome}.pdf`;
+  try{
+    const buf=makePDF(blocks,'recibo',{sub:'Nº '+pad(num)});
+    await S.downloads.save({filename:fn,data:buf});
+    if(!snapshot){ await rSave(num); toast(`Recibo nº ${pad(num)} salvo e registrado.`); S.r=Object.assign(rBlank(),{}); S.rPacId=null; rSync(); renderRecibo(); }
+  }catch(err){ if(!err||err.code!=='declined') toast('Não foi possível gerar o recibo'+(err&&err.message?': '+err.message:'.')); }
+}
+async function rSave(num){
+  if(!S.col) return; const r=S.r;
+  const entry={...r,num,emitidoEm:Date.now()};
+  try{
+    if(S.rPacId){ const p=S.pacientes.find(x=>x.id===S.rPacId)||{}; const d={recibos:[...(p.recibos||[]),entry]}; if(!p.cpf&&r.cpf) d.cpf=r.cpf; await S.col.doc(S.rPacId).update(d); }
+    else { const ref=S.col.doc(); await ref.set({nome:r.nome.trim(),cpf:r.cpf,prof:'',rg:'',end:'',criadoEm:Date.now(),atualizadoEm:Date.now(),historico:[],recibos:[entry]}); }
+  }catch(e){ toast('O PDF foi gerado, mas o recibo não foi registrado.'); }
+}
+function renderRecibos(){
+  const box=$('#rList'); const q=($('#rBusca').value||'').toLowerCase();
+  if(!S.col){ box.innerHTML='<p class="empty">O registro de recibos não funciona nesta visualização.</p>'; return; }
+  const list=allRecibos().filter(r=>(r.pacNome||'').toLowerCase().includes(q)||pad(r.num).includes(q));
+  if(!list.length){ box.innerHTML='<p class="empty">'+(allRecibos().length?'Nenhum recibo encontrado.':'Nenhum recibo emitido ainda.')+'</p>'; return; }
+  box.innerHTML='<table class="rt"><thead><tr><th>Nº</th><th>Paciente</th><th>Referente a</th><th>Valor</th><th>Emitido em</th><th></th></tr></thead><tbody>'+list.map(r=>{
+    const ref = r.tipo==='avulsa'?'Consulta avulsa':`Plano ${r.plano==='sem'?'semestral':'trimestral'}`;
+    return `<tr><td>${pad(r.num)}</td><td>${esc(r.pacNome||'')}</td><td>${ref}</td><td>R$ ${fmt(money(r.valor))}</td><td>${r.dataEm?dBR(r.dataEm):''}</td><td><button class="btn ghost sm" data-num="${r.num}">Baixar de novo</button></td></tr>`; }).join('')+'</tbody></table>';
+}
+function fillCfg(){ const c=S.config; $('#cIni').value=c.numInicial||'';
+  const im=$('#cSigPrev'); if(c.assinatura){ im.src=c.assinatura; im.hidden=false; $('#cSigDel').hidden=false; } else { im.hidden=true; $('#cSigDel').hidden=true; } }
+async function saveCfg(extra){
+  if(!S.col){ toast('Seus dados não podem ser salvos nesta visualização.'); return; }
+  const d={...S.config,...extra,kind:'config'}; delete d.id;
+  try{ const ref=S.col.doc(S.configId||undefined); await ref.set(d); S.configId=ref.id; S.config={...d,id:ref.id}; fillCfg(); if(!S.r.num||!allRecibos().length){ S.r.num=''; } rSync(); renderRecibo(); toast('Dados do recibo salvos.'); }
+  catch(e){ toast('Não foi possível salvar seus dados.'); }
+}
+function loadSig(file){ return new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>{ const im=new Image(); im.onload=()=>{ const w=Math.min(600,im.width), h=Math.round(im.height*w/im.width); const c=document.createElement('canvas'); c.width=w; c.height=h; const x=c.getContext('2d'); x.fillStyle='#fff'; x.fillRect(0,0,w,h); x.drawImage(im,0,0,w,h); res(c.toDataURL('image/png')); }; im.onerror=rej; im.src=fr.result; }; fr.onerror=rej; fr.readAsDataURL(file); }); }
+document.addEventListener('input',e=>{ if(e.target.closest('#rform')) rInput(e); });
+document.addEventListener('change',e=>{ if(e.target.closest('#rform')&&(e.target.type==='radio'||e.target.type==='checkbox')) rInput(e); });
+$('#rPacSel').addEventListener('change',e=>rLoadPatient(e.target.value));
+$('#rdl').addEventListener('click',()=>rDownload());
+$('#rlimpar').addEventListener('click',()=>rLoadPatient(''));
+$('#rBusca').addEventListener('input',renderRecibos);
+$('#rList').addEventListener('click',e=>{ const b=e.target.closest('button[data-num]'); if(!b) return; const r=allRecibos().find(x=>x.num===parseInt(b.dataset.num)); if(r) rDownload(r); });
+$('#cSave').addEventListener('click',()=>saveCfg({numInicial:$('#cIni').value.trim()}));
+$('#cSig').addEventListener('change',async e=>{ const f=e.target.files[0]; e.target.value=''; if(!f) return; try{ const d=await loadSig(f); await saveCfg({assinatura:d}); }catch(err){ toast('Não consegui ler essa imagem. Tente um PNG ou JPG.'); } });
+$('#cSigDel').addEventListener('click',()=>saveCfg({assinatura:''}));
+
 /* ===== backup ===== */
 async function exportar(){
   if(!S.pacientes.length){ toast('Ainda não há pacientes para exportar.'); return; }
@@ -499,7 +716,7 @@ async function importar(e){
   let lista; try{ const j=JSON.parse(await file.text()); lista=Array.isArray(j)?j:j.pacientes; if(!Array.isArray(lista)) throw 0; }catch(err){ toast('Esse arquivo não é uma cópia de pacientes válida.'); return; }
   const chave=p=>((p.nome||'').trim().toLowerCase()+'|'+(p.cpf||'').replace(/\D/g,''));
   const existentes=new Set(S.pacientes.map(chave)); let n=0, pul=0;
-  for(const p of lista){ if(!p||!p.nome){continue;} if(existentes.has(chave(p))){pul++;continue;} const {id,...r}=p; try{ await S.col.doc().set(r); n++; existentes.add(chave(p)); }catch(err){} }
+  for(const p of lista){ if(!p||!p.nome||p.kind==='config'){continue;} if(existentes.has(chave(p))){pul++;continue;} const {id,...r}=p; try{ await S.col.doc().set(r); n++; existentes.add(chave(p)); }catch(err){} }
   toast(`${n} ${n===1?'paciente importada':'pacientes importadas'}`+(pul?`. ${pul} já existiam e foram ignoradas.`:'.'));
 }
 $('#exportar').addEventListener('click',exportar);
@@ -515,7 +732,7 @@ async function showApp(){ $('#login').hidden=true; $('#app').hidden=false; $('#s
 async function loadPacientes(){
   const {data,error}=await S.sb.from(TAB).select('id,dados').order('created_at',{ascending:true});
   if(error){ toast('Não foi possível carregar os pacientes: '+error.message); return; }
-  S.pacientes=data.map(r=>({id:r.id,...(r.dados||{})})); renderPacSelect(); if(S.tab==='pac') renderPacientes();
+  setRows(data.map(r=>({id:r.id,...(r.dados||{})})));
 }
 function makeCol(){ return {doc:(id)=>{ const rid=id||crypto.randomUUID(); return {id:rid,
   set:async d=>{ const {error}=await S.sb.from(TAB).upsert({id:rid,dados:d,updated_at:new Date().toISOString()}); if(error) throw error; await loadPacientes(); },
