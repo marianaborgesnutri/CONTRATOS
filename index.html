@@ -63,7 +63,7 @@ label.f input,label.f select,select#pacSel{width:100%;padding:10px 12px;border:1
 .paper{background:#fff;color:#222;max-width:700px;margin:0 auto;box-shadow:0 1px 2px rgba(40,50,44,.08),0 8px 30px rgba(40,50,44,.10);position:relative;padding-bottom:80px;font-family:Poppins,sans-serif;font-size:13px;line-height:1.62;border-radius:2px;overflow:hidden}
 .ph-ct{position:relative;height:150px}
 .ph-line{position:absolute;left:0;right:0;top:48px;height:1.5px;background:var(--blush)}
-.ph-box{position:absolute;left:15.5%;right:15.5%;top:0;height:150px;background:#55675B;border-radius:0 0 22px 22px;text-align:center;color:#ECDFD9}
+.ph-box{position:absolute;left:15.5%;right:15.5%;top:0;height:150px;background:#55675B;border-radius:0 0 22px 22px;text-align:center;color:#fff}
 .ph-t{font:italic 400 64px/1 Lora,serif;padding-top:40px}
 .ph-box.rec{color:#fff}
 .ph-rt{font:400 32px/1.1 Poppins,sans-serif;padding-top:48px}
@@ -83,6 +83,8 @@ label.f input,label.f select,select#pacSel{width:100%;padding:10px 12px;border:1
 .pb ul{margin:0 0 12px;padding-left:22px}
 .pb mark{background:#F6E1DA;color:#8A4B3C;border-radius:3px;padding:0 3px}
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:70px;text-align:center}
+.sg .solo{grid-column:1 / -1;width:50%;margin:0 auto}
+.sg>div{margin-bottom:34px}
 .sg span{display:block;border-top:1.2px solid #222;margin-bottom:6px}
 .sg small{display:block;font-size:13px}
 .pl{display:block;width:62px;margin:40px auto 0}
@@ -122,6 +124,8 @@ summary{cursor:pointer;font:italic 400 19px Lora,Georgia,serif;color:var(--green
 .rt td{padding:8px;border-bottom:1px solid var(--line);vertical-align:middle}
 .btn.sm{padding:6px 12px;font-size:13px}
 #rList{overflow-x:auto}
+.ra{white-space:nowrap}
+.ra .btn+.btn{margin-left:6px}
 #login{max-width:400px;margin:8vh auto;padding:28px;background:var(--surface);border:1px solid var(--line);border-radius:16px;display:grid;gap:14px}
 #login h2{margin:0;font:italic 400 30px Lora,Georgia,serif;color:var(--green)}
 #login form{gap:12px}
@@ -158,12 +162,28 @@ summary{cursor:pointer;font:italic 400 19px Lora,Georgia,serif;color:var(--green
       <p class="hint" id="pacHint" hidden>Paciente de contrato antigo (feito no Canva)? Preencha os dados abaixo e clique em "Salvar paciente sem gerar PDF". Ela passa a aparecer nesta lista.</p>
       <label class="f">Nome completo<input id="nome" autocomplete="off"></label>
       <label class="f">Profissão<input id="prof" autocomplete="off"></label>
-      <div class="two"><label class="f">CPF<input id="cpf" inputmode="numeric" placeholder="000.000.000-00"></label><label class="f">RG<input id="rg" inputmode="numeric"></label></div>
+      <div class="two"><label class="f">CPF<input id="cpf" inputmode="numeric" placeholder="000.000.000-00"></label><label class="f">RG (opcional)<input id="rg" inputmode="numeric"></label></div>
       <label class="f">Endereço completo<input id="end" autocomplete="off" placeholder="Rua, nº, bairro, Cidade/UF"></label>
+      <label class="chk"><input type="checkbox" id="dupla"> Acompanhamento em dupla</label>
+      <label class="chk"><input type="checkbox" id="resp"> Outra pessoa vai pagar (responsável financeiro)</label>
+    </fieldset>
+    <fieldset id="rowDupla" hidden>
+      <legend>Contratante 2</legend>
+      <label class="f">Nome completo<input id="nome2" autocomplete="off"></label>
+      <label class="f">Profissão<input id="prof2" autocomplete="off"></label>
+      <div class="two"><label class="f">CPF<input id="cpf2" inputmode="numeric" placeholder="000.000.000-00"></label><label class="f">RG (opcional)<input id="rg2" inputmode="numeric"></label></div>
+      <label class="f">Endereço completo<input id="end2" autocomplete="off" placeholder="Rua, nº, bairro, Cidade/UF"></label>
+    </fieldset>
+    <fieldset id="rowResp" hidden>
+      <legend>Responsável financeiro</legend>
+      <p class="hint">Quem paga. Assina o contrato junto e responde pelo pagamento.</p>
+      <label class="f">Nome completo<input id="respNome" autocomplete="off"></label>
+      <label class="f">CPF<input id="respCpf" inputmode="numeric" placeholder="000.000.000-00"></label>
+      <label class="f">Endereço completo<input id="respEnd" autocomplete="off" placeholder="Rua, nº, bairro, Cidade/UF"></label>
     </fieldset>
     <fieldset>
       <legend>Plano</legend>
-      <div class="seg"><label><input type="radio" name="plano" value="tri"><span>Trimestral, 3 consultas</span></label><label><input type="radio" name="plano" value="sem"><span>Semestral, 6 consultas</span></label></div>
+      <div class="seg"><label><input type="radio" name="plano" value="silver"><span>Silver, 3 encontros</span></label><label><input type="radio" name="plano" value="gold"><span>Gold, 5 encontros</span></label><label><input type="radio" name="plano" value="tri"><span>Trimestral, 3</span></label><label><input type="radio" name="plano" value="sem"><span>Semestral, 6</span></label></div>
       <p class="groupl">Modalidade</p>
       <div class="seg"><label><input type="radio" name="mod" value="online"><span>On-line</span></label><label><input type="radio" name="mod" value="gyn"><span>Presencial Goiânia</span></label><label><input type="radio" name="mod" value="rv"><span>Presencial Rio Verde</span></label></div>
       <div class="two"><label class="f">Data da 1ª consulta<input id="data" type="date"></label><label class="f">Horário<input id="hora" type="time"></label></div>
@@ -171,7 +191,7 @@ summary{cursor:pointer;font:italic 400 19px Lora,Georgia,serif;color:var(--green
     </fieldset>
     <fieldset>
       <legend>Pagamento</legend>
-      <div class="two"><label class="f">Valor total (R$)<input id="valor" inputmode="decimal" placeholder="810,00"></label><label class="f">Preço avulso por consulta<input id="avulso" inputmode="decimal"></label></div>
+      <div class="two"><label class="f">Valor total (R$)<input id="valor" inputmode="decimal" placeholder="810,00"></label><label class="f" id="lblAvulso">Preço avulso por consulta<input id="avulso" inputmode="decimal"></label></div>
       <div class="seg"><label><input type="radio" name="pag" value="link"><span>Link Asaas</span></label><label><input type="radio" name="pag" value="vista"><span>À vista</span></label><label><input type="radio" name="pag" value="pix"><span>PIX a cada consulta</span></label></div>
       <p class="hint">"PIX a cada consulta" é para pessoas próximas. Essa opção só aparece no contrato de quem ela for marcada.</p>
       <div id="rowParc" class="two"><label class="f">Nº de parcelas<input id="nparc" type="number" min="1" max="12"></label><p class="hint" id="parcInfo" style="align-self:end;padding-bottom:10px"></p></div>
@@ -205,14 +225,14 @@ summary{cursor:pointer;font:italic 400 19px Lora,Georgia,serif;color:var(--green
     </fieldset>
     <fieldset>
       <legend>Referente a</legend>
-      <div class="seg"><label><input type="radio" name="r_tipo" data-k="tipo" value="avulsa"><span>Consulta avulsa</span></label><label><input type="radio" name="r_tipo" data-k="tipo" value="plano"><span>Plano (contrato)</span></label></div>
+      <div class="seg"><label><input type="radio" name="r_tipo" data-k="tipo" value="avulsa"><span>Consulta avulsa</span></label><label><input type="radio" name="r_tipo" data-k="tipo" value="plano"><span>Plano completo</span></label><label><input type="radio" name="r_tipo" data-k="tipo" value="consplano"><span>Consulta do plano</span></label></div>
       <p class="groupl">Modalidade</p>
       <div class="seg"><label><input type="radio" name="r_mod" data-k="mod" value="online"><span>On-line</span></label><label><input type="radio" name="r_mod" data-k="mod" value="gyn"><span>Presencial Goiânia</span></label><label><input type="radio" name="r_mod" data-k="mod" value="rv"><span>Presencial Rio Verde</span></label></div>
       <div id="rAvulsa"><label class="f">Data da consulta<input type="date" data-k="dataCons"></label></div>
       <div id="rPacote" class="stack">
-        <div class="seg"><label><input type="radio" name="r_plano" data-k="plano" value="tri"><span>Trimestral</span></label><label><input type="radio" name="r_plano" data-k="plano" value="sem"><span>Semestral</span></label></div>
+        <div class="seg"><label><input type="radio" name="r_plano" data-k="plano" value="silver"><span>Silver</span></label><label><input type="radio" name="r_plano" data-k="plano" value="gold"><span>Gold</span></label><label><input type="radio" name="r_plano" data-k="plano" value="tri"><span>Trimestral</span></label><label><input type="radio" name="r_plano" data-k="plano" value="sem"><span>Semestral</span></label></div>
         <label class="f">Data da contratação<input type="date" data-k="dataCt"></label>
-        <p class="hint">Um recibo só, com o valor total do plano, mesmo se ela parcelar.</p>
+        <p class="hint">Plano completo: um recibo só, com o valor total. Consulta do plano: para quem paga cada consulta separadamente.</p>
       </div>
     </fieldset>
     <fieldset>
@@ -276,7 +296,8 @@ const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 function maskCPF(v){ const d=v.replace(/\D/g,'').slice(0,11); return d.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})\.(\d{3})(\d)/,'$1.$2.$3').replace(/\.(\d{3})(\d{1,2})$/,'.$1-$2'); }
 
 /* ===== state ===== */
-const blank = () => ({nome:'',prof:'',cpf:'',rg:'',end:'',plano:'tri',mod:'online',data:'',hora:'',valor:'',avulso:'290,00',pag:'link',meio:'pix',nparc:'3',cidade:'Goiânia',dataAss:todayISO(),dataOrig:''});
+const PF=['nome','prof','cpf','rg','end','nome2','prof2','cpf2','rg2','end2','respNome','respCpf','respEnd'];
+const blank = () => ({nome:'',prof:'',cpf:'',rg:'',end:'',nome2:'',prof2:'',cpf2:'',rg2:'',end2:'',respNome:'',respCpf:'',respEnd:'',dupla:false,resp:false,plano:'tri',mod:'online',data:'',hora:'',valor:'',avulso:'350,00',pag:'link',meio:'pix',nparc:'3',cidade:'Goiânia',dataAss:todayISO(),dataOrig:''});
 const S = { tab:'novo', pacId:null, f:blank(), pacientes:[], col:null, downloads:undefined, del:null };
 
 /* ===== contract text ===== */
@@ -285,9 +306,13 @@ const WEBDIET = (ref) => `O acesso do(a) CONTRATANTE ao aplicativo WebDiet é di
 const RV = 'Parágrafo único: Nos casos de pacientes atendidos presencialmente em Rio Verde, cuja agenda ocorre apenas uma vez ao mês, a ausência na data marcada implicará a perda do valor da consulta, salvo se, a critério da CONTRATADA, for possível realizar o atendimento na modalidade on-line ou presencial em Goiânia dentro do mesmo mês, mantendo-se as mesmas condições do plano contratado.';
 const TOL = 'Será concedida tolerância de até 15 (quinze) minutos de atraso para o início das consultas, presenciais ou on-line. Dentro da tolerância, a consulta será realizada no tempo restante do horário agendado, sem prorrogação. Ultrapassada a tolerância, a consulta será considerada ausência';
 
+const PLANOS={tri:{n:3,nome:'plano trimestral'},sem:{n:6,nome:'plano semestral'},silver:{n:3,nome:'plano Silver'},gold:{n:5,nome:'plano Gold'}};
+const NEXT={3:'3 (três)',5:'5 (cinco)',6:'6 (seis)'};
+const nConsultas=pl=>(PLANOS[pl]||PLANOS.tri).n;
+const nomeDupla=p=>p.dupla&&p.nome2?`${p.nome} e ${p.nome2}`:(p.nome||'');
 function build(f, tipo){
   const miss=[]; const ph=l=>{miss.push(l); return `⟦${l}⟧`;}; const v=(x,l)=>(x&&String(x).trim())?String(x).trim():ph(l);
-  const n = f.plano==='tri'?3:6, nT = n===3?'3 (três)':'6 (seis)', plano = f.plano==='tri'?'trimestral':'semestral';
+  const P=PLANOS[f.plano]||PLANOS.tri, n=P.n, nT=NEXT[n], planoN=P.nome; const D=!!f.dupla, RF=!!f.resp;
   const mod = {online:'on-line', gyn:'presenciais em Goiânia/GO', rv:'presenciais em Rio Verde/GO'}[f.mod];
   const valor = money(f.valor), avulso = money(f.avulso);
   const valorTxt = valor ? `**R$ ${fmt(valor)}** (${reais(valor)})` : `**${ph('valor total')}**`;
@@ -304,17 +329,28 @@ function build(f, tipo){
   if(f.pag==='pix') pag.push(`(x) Parcelado em ${npT} ${np===1?'mensal':'mensais'} de ${parc} cada, pagas via PIX no ato de cada consulta, durante a vigência ${tipo==='aditivo'?'do pacote':'do contrato'}.`);
   const cid = f.cidade, dataAss = f.dataAss ? dExt(f.dataAss) : ph('data da assinatura');
   const nome = v(f.nome,'nome do paciente');
-  const contratante = `**CONTRATANTE:** ${nome}, ${v(f.prof,'profissão')}, inscrito(a) no CPF sob o nº ${v(f.cpf,'CPF')} e RG sob o nº ${v(f.rg,'RG')}, residente e domiciliado(a) em ${v(f.end,'endereço')}.`;
+  const qual=(lab,nm,prof,cpf,rg,end,sfx)=>`**${lab}:** ${nm}, ${v(prof,'profissão'+sfx)}, inscrito(a) no CPF sob o nº ${v(cpf,'CPF'+sfx)}${rg&&rg.trim()?` e RG sob o nº ${rg.trim()}`:''}, residente e domiciliado(a) em ${v(end,'endereço'+sfx)}.`;
+  const nome2 = D ? v(f.nome2,'nome do contratante 2') : '';
+  const respNome = RF ? v(f.respNome,'nome do responsável financeiro') : '';
+  let contratante = qual(D?'CONTRATANTE 1':'CONTRATANTE',nome,f.prof,f.cpf,f.rg,f.end,'');
+  if(D) contratante += '⏎' + qual('CONTRATANTE 2',nome2,f.prof2,f.cpf2,f.rg2,f.end2,' do contratante 2');
+  if(RF) contratante += '⏎' + `**RESPONSÁVEL FINANCEIRO:** ${respNome}, inscrito(a) no CPF sob o nº ${v(f.respCpf,'CPF do responsável')}, residente e domiciliado(a) em ${v(f.respEnd,'endereço do responsável')}.`;
+  const devedor = RF ? 'do RESPONSÁVEL FINANCEIRO' : (D ? 'dos CONTRATANTES' : 'do(a) CONTRATANTE');
+  const signers = [[nome, D?'Contratante 1':'Contratante']].concat(D?[[nome2,'Contratante 2']]:[], RF?[[respNome,'Responsável financeiro']]:[], [['Mariana Oliveira Borges','Contratada']]);
   const B=[]; const p=(t,o={})=>B.push({t:'p',x:t,...o}), h=t=>B.push({t:'h',x:t}), li=(arr)=>arr.forEach((x,i)=>B.push({t:'li',x,last:i===arr.length-1})), pu=t=>B.push({t:'pu',x:t});
   const primeira = `A primeira consulta será realizada em **${prim}**, às **${hora}**. As demais consultas serão agendadas em comum acordo entre as partes, preferencialmente ao final de cada consulta anterior, respeitando o intervalo previsto no item`;
-  const fecho = () => { B.push({t:'date',x:`${cid}/GO, ${dataAss}.`}); B.push({t:'sign',a:nome,b:'Mariana Oliveira Borges'}); };
+  const rows=Math.ceil(signers.length/2), signNeed=rows*96+10;
+  const fecho = () => { B.push({t:'date',x:`${cid}/GO, ${dataAss}.`}); B.push({t:'sign',signers}); };
+  const pq=(t,o)=>{ t.split('⏎').forEach(x=>p(x,o)); };
 
   if(tipo==='contrato'){
-    p(CONTRATADA(f.mod)); p(contratante);
+    p(CONTRATADA(f.mod)); pq(contratante);
     p('As partes acima qualificadas têm entre si, justas e acertadas, a prestação de serviços de acompanhamento nutricional, conforme as condições seguintes:');
+    if(D) p('Para os fins deste contrato, os CONTRATANTES 1 e 2 serão referidos em conjunto como CONTRATANTES e, individualmente, como CONTRATANTE. Salvo disposição em contrário, as regras aqui previstas aplicam-se a cada CONTRATANTE individualmente.');
     h('CLÁUSULA PRIMEIRA – DO OBJETO');
-    p(`1.1 O presente contrato tem como objeto a prestação de serviços nutricionais pela CONTRATADA, consistentes em acompanhamento com plano alimentar personalizado e **${nT} consultas nutricionais ${mod}**, correspondentes ao **plano ${plano}**, conforme agenda e condições descritas neste instrumento.`);
-    p('1.2 O pacote contratado inclui:',{tight:1});
+    if(D) p(`1.1 O presente contrato tem como objeto a prestação de serviços nutricionais pela CONTRATADA, consistentes em acompanhamento nutricional em dupla, com plano alimentar personalizado para cada CONTRATANTE e **${nT} consultas nutricionais ${mod}**, realizadas com os dois CONTRATANTES simultaneamente, correspondentes ao **${planoN}**, conforme agenda e condições descritas neste instrumento.`);
+    else p(`1.1 O presente contrato tem como objeto a prestação de serviços nutricionais pela CONTRATADA, consistentes em acompanhamento com plano alimentar personalizado e **${nT} consultas nutricionais ${mod}**, correspondentes ao **${planoN}**, conforme agenda e condições descritas neste instrumento.`);
+    p(D?'1.2 O pacote contratado inclui, para cada CONTRATANTE:':'1.2 O pacote contratado inclui:',{tight:1});
     li([f.mod==='online'?'Avaliação inicial;':'Avaliação inicial e antropométrica;','Elaboração de plano alimentar personalizado;','Reavaliações nutricionais;','Ajustes do plano conforme evolução e necessidade.']);
     p('1.3 As consultas ocorrerão com intervalo de 28 (vinte e oito) a 45 (quarenta e cinco) dias entre si. É permitida a remarcação mediante aviso prévio de 24 (vinte e quatro) horas, limitada a uma remarcação por consulta, para data em até 2 (duas) semanas da data original.');
     if(f.mod==='rv') pu(RV);
@@ -322,6 +358,7 @@ function build(f, tipo){
     p('1.5 Caso o(a) CONTRATANTE não realize a consulta seguinte dentro do prazo de 45 (quarenta e cinco) dias contados da consulta anterior, ressalvada a remarcação prevista no item 1.3, a consulta será considerada realizada para todos os efeitos, aplicando-se o disposto no item 1.4. Essa regra não se aplica quando o atraso decorrer de indisponibilidade de agenda da CONTRATADA.');
     p(`1.6 ${primeira} 1.3, a necessidade técnica e a disponibilidade da CONTRATADA.`);
     p(`1.7 ${TOL}, aplicando-se o disposto no item 1.4.`);
+    if(D) p('1.8 Na ausência de um dos CONTRATANTES, a consulta será realizada normalmente com o CONTRATANTE presente e será considerada realizada também para o CONTRATANTE ausente, nos termos do item 1.4. A remarcação prevista no item 1.3 vale para a consulta da dupla e deverá ser solicitada com a concordância dos dois CONTRATANTES.');
     h('CLÁUSULA SEGUNDA – DA RESPONSABILIDADE PROFISSIONAL E DA PROTEÇÃO DE DADOS');
     p('2.1 A CONTRATADA exercerá suas atividades com diligência, prudência, competência técnica e ética profissional, respeitando os princípios do Conselho Regional de Nutrição.');
     p('2.2 A responsabilidade civil da CONTRATADA é obrigação de meio, e não de resultado. Não há garantia de resultados específicos, pois eles dependem do grau de adesão, do biotipo, da rotina e da disciplina do(a) CONTRATANTE, além de outras variáveis externas ao controle profissional.');
@@ -332,16 +369,21 @@ function build(f, tipo){
     p('2.7 O tratamento dos dados será realizado conforme as disposições da Lei Geral de Proteção de Dados (Lei nº 13.709/2018), sendo vedado o compartilhamento com terceiros sem o consentimento expresso do(a) CONTRATANTE, salvo nos casos previstos em lei.');
     p('2.8 '+WEBDIET('deste contrato').replace('última consulta do pacote, realizada ou considerada realizada,','última consulta do pacote, realizada ou considerada realizada nos termos dos itens 1.4 e 1.5,'));
     h('CLÁUSULA TERCEIRA – DO VALOR E FORMA DE PAGAMENTO');
-    p(`3.1 Pelo serviço contratado, o(a) CONTRATANTE pagará à CONTRATADA o valor total de ${valorTxt}.`);
+    if(RF) p(`3.1 Pelo serviço contratado, o RESPONSÁVEL FINANCEIRO pagará à CONTRATADA, em favor ${D?'dos CONTRATANTES':'do(a) CONTRATANTE'}, o valor total de ${valorTxt}${D?', referente ao acompanhamento da dupla':''}.`);
+    else if(D) p(`3.1 Pelo serviço contratado, os CONTRATANTES pagarão à CONTRATADA o valor total de ${valorTxt}, referente ao acompanhamento da dupla, respondendo solidariamente pelo pagamento integral.`);
+    else p(`3.1 Pelo serviço contratado, o(a) CONTRATANTE pagará à CONTRATADA o valor total de ${valorTxt}.`);
     p('3.2 A forma de pagamento será:',{tight:1}); pag.forEach((x,i)=>p(x,{tight:i<pag.length-1}));
     p('3.3 O inadimplemento de qualquer parcela ensejará:',{tight:1});
     li(['Multa de 2%;','Juros de mora de 1% ao mês (pro rata die);','Correção monetária pelo IGPM/FGV.']);
     p('3.4 A partir de 30 (trinta) dias de inadimplemento, a CONTRATADA poderá:',{tight:1});
-    li(['Suspender os atendimentos futuros;','Promover a cobrança extrajudicial ou judicial;','Inscrever o nome do(a) CONTRATANTE nos órgãos de proteção ao crédito (SERASA, SPC etc.), mediante notificação prévia com 10 (dez) dias úteis de antecedência.']);
-    p(`3.5 A contratação do pacote é indivisível. Em caso de rescisão antecipada, o valor das consultas já realizadas (inclusive as consideradas realizadas nos termos dos itens 1.4 e 1.5) será recalculado ao preço avulso de ${avulsoTxt} por consulta, e a diferença será cobrada no ato da rescisão.`);
+    li(['Suspender os atendimentos futuros;','Promover a cobrança extrajudicial ou judicial;',`Inscrever o nome ${devedor} nos órgãos de proteção ao crédito (SERASA, SPC etc.), mediante notificação prévia com 10 (dez) dias úteis de antecedência.`]);
+    p(`3.5 A contratação do pacote é indivisível. Em caso de rescisão antecipada, o valor das consultas já realizadas (inclusive as consideradas realizadas nos termos dos itens 1.4 e 1.5) será recalculado ao preço avulso de ${avulsoTxt} por consulta${D?' e por pessoa':''}, e a diferença será cobrada no ato da rescisão.`);
+    let it=6;
+    if(D) p(`3.${it++} Caso apenas um dos CONTRATANTES rescinda o contrato, o acompanhamento seguirá normalmente para o outro, e o valor total contratado continuará devido integralmente, sem redução ou devolução, ${RF?'pelo RESPONSÁVEL FINANCEIRO':'pelo CONTRATANTE que permanecer no acompanhamento'}.`);
+    if(RF) p(`3.${it++} O RESPONSÁVEL FINANCEIRO declara-se responsável pelo pagamento integral dos valores previstos neste contrato, inclusive multas, juros e diferenças decorrentes de rescisão, respondendo solidariamente com ${D?'os CONTRATANTES':'o(a) CONTRATANTE'} pelas obrigações financeiras aqui assumidas.`);
     h('CLÁUSULA QUARTA – DA VIGÊNCIA E RESCISÃO');
     p(`4.1 O presente contrato terá início na data da primeira consulta **(${prim})** e vigência até a última consulta do pacote, realizada ou considerada realizada nos termos dos itens 1.4 e 1.5.`);
-    p('4.2 A rescisão contratual poderá ocorrer a qualquer tempo, mediante aviso prévio escrito de 24 (vinte e quatro) horas, sujeitando-se o(a) CONTRATANTE ao disposto no item 3.5.');
+    p(`4.2 A rescisão contratual poderá ocorrer a qualquer tempo, mediante aviso prévio escrito de 24 (vinte e quatro) horas, aplicando-se o disposto ${D?'nos itens 3.5 e 3.6':'no item 3.5'}.`);
     h('CLÁUSULA QUINTA – DA COMUNICAÇÃO E ATENDIMENTO FORA DE CONSULTA');
     p('5.1 Toda comunicação entre as partes será realizada preferencialmente por meio de WhatsApp ou e-mail, utilizando os contatos fornecidos no momento da contratação.');
     p('5.2 A CONTRATADA se compromete a responder às mensagens em prazo razoável, de acordo com sua rotina profissional, mas informa expressamente que não presta serviços em regime de plantão nem possui obrigação de responder imediatamente.');
@@ -359,14 +401,15 @@ function build(f, tipo){
     p('8.3 Este contrato poderá ser firmado eletronicamente, com validade jurídica equivalente à assinatura física, nos termos da legislação vigente.');
     p('8.4 O presente contrato, assinado eletronicamente, constitui título executivo extrajudicial, nos termos do art. 784, inciso III e § 4º, do Código de Processo Civil (Lei nº 13.105/2015), podendo a parte credora promover a execução judicial para cobrança das obrigações aqui pactuadas em caso de inadimplemento.');
     p(`8.5 As partes elegem o foro da Comarca de **${cid}/GO** para dirimir quaisquer controvérsias oriundas deste contrato, com renúncia a qualquer outro, por mais privilegiado que seja.`);
-    p('E, por estarem assim justas e contratadas, firmam o presente instrumento.',{end:1});
+    p('E, por estarem assim justas e contratadas, firmam o presente instrumento.',{end:signNeed});
     fecho();
   } else {
     const orig = f.dataOrig ? dExt(f.dataOrig) : ph('data do contrato original');
-    p(CONTRATADA(f.mod)); p(contratante);
+    p(CONTRATADA(f.mod)); pq(contratante);
     p(`Pelo presente termo aditivo, as partes acima qualificadas renovam o contrato de prestação de serviços de acompanhamento nutricional assinado em **${orig}**, mediante as condições seguintes:`);
+    if(D) p('Para os fins deste termo, os CONTRATANTES 1 e 2 serão referidos em conjunto como CONTRATANTES e, individualmente, como CONTRATANTE.');
     h('CLÁUSULA PRIMEIRA – DA RENOVAÇÃO');
-    p(`1.1 De comum acordo, as partes ajustam a renovação do contrato original, estabelecendo novo **pacote ${plano}**, com **${nT} consultas nutricionais ${mod}**. O presente termo aditivo terá início na data da primeira consulta **(${prim})** e vigência até a última consulta do pacote, realizada ou considerada realizada nos termos do item 1.3.`);
+    p(`1.1 De comum acordo, as partes ajustam a renovação do contrato original, estabelecendo novo **${planoN}**, com **${nT} consultas nutricionais ${mod}**${D?', realizadas com os dois CONTRATANTES simultaneamente':''}. O presente termo aditivo terá início na data da primeira consulta **(${prim})** e vigência até a última consulta do pacote, realizada ou considerada realizada nos termos do item 1.3.`);
     p('1.2 As consultas ocorrerão com intervalo de 28 (vinte e oito) a 45 (quarenta e cinco) dias entre si, aplicando-se as regras de remarcação e ausência previstas no contrato original.');
     if(f.mod==='rv') pu(RV);
     p('1.3 Caso o(a) CONTRATANTE não realize a consulta seguinte dentro do prazo de 45 (quarenta e cinco) dias contados da consulta anterior, ressalvada a remarcação prevista no contrato original, a consulta será considerada realizada para todos os efeitos. Essa regra não se aplica quando o atraso decorrer de indisponibilidade de agenda da CONTRATADA.');
@@ -375,13 +418,14 @@ function build(f, tipo){
     h('CLÁUSULA SEGUNDA – DO VALOR E FORMA DE PAGAMENTO');
     p(`2.1 O valor do novo pacote é de ${valorTxt}.`);
     p('2.2 A forma de pagamento será:',{tight:1}); pag.forEach((x,i)=>p(x,{tight:i<pag.length-1}));
-    p(`2.3 A contratação do pacote é indivisível. Em caso de rescisão antecipada, o valor das consultas já realizadas (inclusive as consideradas realizadas) será recalculado ao preço avulso de ${avulsoTxt} por consulta, e a diferença será cobrada no ato da rescisão.`);
+    p(`2.3 A contratação do pacote é indivisível. Em caso de rescisão antecipada, o valor das consultas já realizadas (inclusive as consideradas realizadas) será recalculado ao preço avulso de ${avulsoTxt} por consulta${D?' e por pessoa':''}, e a diferença será cobrada no ato da rescisão.`);
+    if(RF) p(`2.4 O RESPONSÁVEL FINANCEIRO declara-se responsável pelo pagamento integral dos valores previstos neste termo aditivo, inclusive multas, juros e diferenças decorrentes de rescisão, respondendo solidariamente com ${D?'os CONTRATANTES':'o(a) CONTRATANTE'} pelas obrigações financeiras aqui assumidas.`);
     h('CLÁUSULA TERCEIRA – DO ACESSO AO WEBDIET');
     p('3.1 '+WEBDIET('do pacote').replace('salvo em caso de renovação','salvo em caso de nova renovação'));
     h('CLÁUSULA QUARTA – DAS DEMAIS DISPOSIÇÕES');
     p('4.1 Ficam inalteradas as demais cláusulas e condições do contrato original, naquilo que não conflitarem com o presente termo aditivo.');
     p('4.2 O presente termo aditivo, assinado eletronicamente, integra o contrato original e constitui título executivo extrajudicial, nos termos do art. 784, inciso III e § 4º, do Código de Processo Civil (Lei nº 13.105/2015).');
-    p('E, por estarem de pleno acordo, depois de lido e achado conforme, firmam o presente instrumento.',{end:1});
+    p('E, por estarem de pleno acordo, depois de lido e achado conforme, firmam o presente instrumento.',{end:signNeed});
     fecho();
   }
   return {blocks:B, miss:[...new Set(miss)]};
@@ -402,7 +446,7 @@ function renderPreview(){
     else if(b.t==='p') html+=`<p class="${b.tight?'tight':''}">${rich(b.x)}</p>`;
     else if(b.t==='pu') html+=`<p class="pu">${rich(b.x)}</p>`;
     else if(b.t==='date') html+=`<p class="dt">${rich(b.x)}</p>`;
-    else if(b.t==='sign') html+=`<div class="sg"><div><span></span>${rich(b.a)}<small>Contratante</small></div><div><span></span>${rich(b.b)}<small>Contratada</small></div></div>`;
+    else if(b.t==='sign') html+=`<div class="sg">${b.signers.map(([nm,role],i)=>`<div class="${(i===b.signers.length-1&&b.signers.length%2)?'solo':''}"><span></span>${rich(nm)}<small>${role}</small></div>`).join('')}</div>`;
   }
   html+=`</div><img class="pl" src="data:image/png;base64,${ASSETS.logo}" alt="">`;
   $('#paper').innerHTML=html;
@@ -431,8 +475,8 @@ function makePDF(blocks, tipo, opts={}){
       doc.setFontSize(14); doc.text(opts.sub||'',297.6,100,{align:'center'});
     } else if(tipo==='contrato'){
       doc.setFillColor(...GREEN); doc.roundedRect(92,-24,411,148,18,18,'F');
-      doc.setFont('Lora','italic'); doc.setFontSize(60); doc.setTextColor(...CREAM); doc.text(tipo==='recibo'?'Recibo':'Contrato',297.6,86,{align:'center'});
-      spaced(opts.sub||'PACOTE NUTRICIONAL DE CONSULTAS',109,CREAM,10.5,3.8);
+      doc.setFont('Lora','italic'); doc.setFontSize(60); doc.setTextColor(255,255,255); doc.text(tipo==='recibo'?'Recibo':'Contrato',297.6,86,{align:'center'});
+      spaced(opts.sub||'PACOTE NUTRICIONAL DE CONSULTAS',109,[255,255,255],10.5,3.8);
     } else {
       doc.setFont('Lora','normal'); doc.setFontSize(52); doc.setTextColor(...GREEN); doc.text('Termo aditivo',297.6,92,{align:'center'});
       fnt(0,1); doc.setFontSize(25); doc.text('Renovação de Contrato',297.6,124,{align:'center'});
@@ -462,7 +506,7 @@ function makePDF(blocks, tipo, opts={}){
   doc.setFontSize(FS);
   for(const b of blocks){
     if(b.t==='h'){ const n=wrap(words('**'+b.x+'**'),W-40).length; if(y+(n+2)*LH>BOTTOM) newPage(); y+=4; para('**'+b.x+'**',L+20,W-40,'center',8); }
-    else if(b.t==='p'){ if(b.end && y+2*LH+128>BOTTOM) newPage(); para(b.x,L,W,'justify',b.tight?3:10,3); }
+    else if(b.t==='p'){ if(b.end && y+2*LH+(b.end===1?128:b.end+30)>BOTTOM) newPage(); para(b.x,L,W,'justify',b.tight?3:10,3); }
     else if(b.t==='pu') para(b.x,L+64,W-64,'justify',10,3);
     else if(b.t==='li'){ if(y>BOTTOM) newPage(); fnt(); doc.setTextColor(...INK); doc.text('•',L+4,y); para(b.x,L+16,W-16,'left',b.last?10:1); }
     else if(b.t==='date'){ y+=4; para(b.x,L,W,'right',0); }
@@ -470,9 +514,12 @@ function makePDF(blocks, tipo, opts={}){
     else if(b.t==='sig1'){ y+=10; const c=297.6; if(b.img){ try{ const p=doc.getImageProperties(b.img); const w=Math.min(240,p.width*58/p.height), h=w*p.height/p.width; doc.addImage(b.img,'PNG',c-w/2,y,w,h); y+=h+4; }catch(e){ y+=56; } } else y+=56;
       doc.setDrawColor(20,20,20); doc.setLineWidth(1); doc.line(c-120,y,c+120,y); y+=15; doc.setFontSize(FS);
       b.lines.forEach((l,i)=>{ const bold=l.startsWith('**'); fnt(bold); doc.setFontSize(i?9:FS); doc.setTextColor(...(i?[90,90,90]:INK)); doc.text(l.replace(/\*\*/g,''),c,y,{align:'center'}); y+=i?13:15; }); doc.setFontSize(FS); }
-    else if(b.t==='sign'){ y+=58; const cols=[[L,L+W/2-20,b.a,'Contratante'],[L+W/2+20,R,b.b,'Contratada']];
-      doc.setDrawColor(20,20,20); doc.setLineWidth(1);
-      cols.forEach(([x1,x2,nm,role])=>{ doc.line(x1,y,x2,y); fnt(); doc.setFontSize(FS); doc.setTextColor(...INK); const c=(x1+x2)/2; doc.text(nm.replace(/\*\*/g,''),c,y+15,{align:'center'}); doc.text(role,c,y+29,{align:'center'}); }); y+=40; }
+    else if(b.t==='sign'){ const sg=b.signers; const pos=[[L,L+W/2-20],[L+W/2+20,R]];
+      for(let r0=0;r0<sg.length;r0+=2){ const row=sg.slice(r0,r0+2); y+=(r0?56:58); if(y+30>BOTTOM+40){ newPage(); y+=58; }
+        doc.setDrawColor(20,20,20); doc.setLineWidth(1);
+        row.forEach(([nm,role],j)=>{ let [x1,x2]=pos[j]; if(row.length===1){ x1=297.6-(W/4-10); x2=297.6+(W/4-10); }
+          doc.line(x1,y,x2,y); fnt(); doc.setFontSize(FS); doc.setTextColor(...INK); const c=(x1+x2)/2; doc.text(String(nm).replace(/\*\*/g,'').replace(/⟦|⟧/g,''),c,y+15,{align:'center'}); doc.text(role,c,y+29,{align:'center'}); });
+        y+=40; } }
   }
   return doc.output('arraybuffer');
 }
@@ -480,7 +527,9 @@ function makePDF(blocks, tipo, opts={}){
 /* ===== form binding ===== */
 function syncForm(){
   const f=S.f;
-  ['nome','prof','cpf','rg','end','data','hora','valor','avulso','nparc','dataAss','dataOrig'].forEach(k=>{ const el=$('#'+k); if(el && el.value!==f[k]) el.value=f[k]; });
+  [...PF,'data','hora','valor','avulso','nparc','dataAss','dataOrig'].forEach(k=>{ const el=$('#'+k); if(el && el.value!==f[k]) el.value=f[k]; });
+  ['dupla','resp'].forEach(k=>{ const el=$('#'+k); if(el) el.checked=!!f[k]; });
+  $('#rowDupla').hidden=!f.dupla; $('#rowResp').hidden=!f.resp; $('#lblAvulso').firstChild.textContent = f.dupla?'Preço avulso por consulta, por pessoa':'Preço avulso por consulta';
   ['plano','mod','pag','cidade','meio'].forEach(k=>$$(`input[name=${k}]`).forEach(r=>r.checked=(r.value===f[k])));
   $('#rowVista').hidden = f.pag!=='vista'; $('#rowParc').hidden = f.pag!=='pix';
   const valor=money(f.valor), np=parseInt(f.nparc)||0;
@@ -490,20 +539,22 @@ function syncForm(){
 }
 function onInput(e){
   const el=e.target; const k=el.name||el.id; if(!(k in S.f)) return;
-  let val=el.value; if(k==='cpf'){ val=maskCPF(val); el.value=val; }
+  let val=el.type==='checkbox'?el.checked:el.value; if(k==='cpf'||k==='cpf2'||k==='respCpf'){ val=maskCPF(val); el.value=val; }
   const prev=S.f[k]; S.f[k]=val;
   if(k==='mod'){ if(val==='rv') S.f.cidade='Rio Verde'; if(val==='gyn') S.f.cidade='Goiânia'; }
-  if(k==='plano' && (S.f.nparc===''||S.f.nparc===String(prev==='tri'?3:6))) S.f.nparc=String(val==='tri'?3:6);
+  if(k==='dupla'){ if(val&&S.f.avulso==='350,00') S.f.avulso='300,00'; if(!val&&S.f.avulso==='300,00') S.f.avulso='350,00'; }
+  if(k==='plano' && (S.f.nparc===''||S.f.nparc===String(nConsultas(prev)))) S.f.nparc=String(nConsultas(val));
   syncForm(); renderPreview();
 }
 function loadPatient(id){
   S.pacId=id||null; const keep={dataAss:todayISO()};
   if(!id){ S.f=Object.assign(blank(),keep); }
   else { const p=S.pacientes.find(x=>x.id===id); if(!p) return; const h=p.historico||[]; const last=h[h.length-1]||p.padrao||{};
-    const firstCt=h.find(x=>x.tipo==='contrato');
-    S.f=Object.assign(blank(),{nome:p.nome||'',prof:p.prof||'',cpf:p.cpf||'',rg:p.rg||'',end:p.end||''},
-      last.plano?{plano:last.plano,mod:last.mod,valor:last.valor||'',avulso:last.avulso||'290,00',pag:(last.pag==='asaas'?'link':last.pag)||'link',meio:(last.meio==='dinheiro'?'dinheiro':'pix'),nparc:last.nparc||'',cidade:last.cidade||'Goiânia'}:{},
-      {dataOrig: p.dataOrig || (firstCt&&firstCt.dataAss) || ''}, keep); }
+    const cts=h.filter(x=>x.tipo==='contrato'); const lastCt=cts[cts.length-1];
+    const pp={}; PF.forEach(k=>pp[k]=p[k]||''); pp.dupla=!!p.dupla; pp.resp=!!p.resp;
+    S.f=Object.assign(blank(),pp,
+      last.plano?{plano:last.plano,mod:last.mod,valor:last.valor||'',avulso:last.avulso||'350,00',pag:(last.pag==='asaas'?'link':last.pag)||'link',meio:(last.meio==='dinheiro'?'dinheiro':'pix'),nparc:last.nparc||'',cidade:last.cidade||'Goiânia'}:{},
+      {dataOrig: (lastCt&&lastCt.dataAss) || p.dataOrig || ''}, keep); }
   syncForm(); renderPreview();
 }
 function setTab(t){ S.tab=t; $$('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
@@ -513,15 +564,15 @@ function setTab(t){ S.tab=t; $$('.tab').forEach(b=>b.setAttribute('aria-selected
 /* ===== pacientes ===== */
 function renderPacSelect(){ const sel=$('#pacSel'); const cur=S.pacId||'';
   const list=[...S.pacientes].sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR'));
-  sel.innerHTML='<option value="">Paciente novo</option>'+list.map(p=>`<option value="${esc(p.id)}">${esc(p.nome||'Sem nome')}</option>`).join('');
+  sel.innerHTML='<option value="">Paciente novo</option>'+list.map(p=>`<option value="${esc(p.id)}">${esc(nomeDupla(p)||'Sem nome')}</option>`).join('');
   sel.value=cur; $('#pacWrap').hidden = !S.col; $('#pacHint').hidden = !S.col; }
 function renderPacientes(){ const box=$('#pacList'); const q=($('#busca').value||'').toLowerCase();
   if(!S.col){ box.innerHTML='<p class="empty">Os pacientes não podem ser salvos nesta visualização. Abra a ferramenta pelo link do claude.ai para guardar o cadastro.</p>'; return; }
-  const list=[...S.pacientes].filter(p=>(p.nome||'').toLowerCase().includes(q)).sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR'));
+  const list=[...S.pacientes].filter(p=>nomeDupla(p).toLowerCase().includes(q)).sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR'));
   if(!list.length){ box.innerHTML = S.pacientes.length?'<p class="empty">Nenhum paciente com esse nome.</p>':'<p class="empty">Nenhum paciente salvo ainda. Quando você baixar o primeiro contrato, o cadastro da paciente aparece aqui, pronto pra renovar.</p>'; return; }
   box.innerHTML=list.map(p=>{ const h=p.historico||[]; const l=h[h.length-1];
-    const info = l ? `${l.tipo==='contrato'?'Contrato':'Renovação'} ${l.plano==='tri'?'trimestral':'semestral'}, ${{online:'on-line',gyn:'presencial Goiânia',rv:'presencial Rio Verde'}[l.mod]}. Início em ${l.data?dBR(l.data):'—'}` : (p.dataOrig?`Contrato original assinado em ${dBR(p.dataOrig)}`:'Cadastrada sem contrato gerado aqui');
-    return `<article class="pc"><div><h3>${esc(p.nome||'Sem nome')}</h3><p>${esc(p.prof||'')}</p><p class="muted">${esc(info)}. ${h.length} ${h.length===1?'documento gerado':'documentos gerados'}${(p.recibos||[]).length?`, ${(p.recibos||[]).length} ${(p.recibos||[]).length===1?'recibo':'recibos'}`:''}.</p></div>
+    const info = l ? `${l.tipo==='contrato'?'Contrato':'Renovação'} ${(PLANOS[l.plano]||PLANOS.tri).nome}, ${{online:'on-line',gyn:'presencial Goiânia',rv:'presencial Rio Verde'}[l.mod]}. Início em ${l.data?dBR(l.data):'—'}` : (p.dataOrig?`Contrato original assinado em ${dBR(p.dataOrig)}`:'Cadastrada sem contrato gerado aqui');
+    return `<article class="pc"><div><h3>${esc(nomeDupla(p)||'Sem nome')}</h3>${p.dupla?'<p class="muted">Acompanhamento em dupla</p>':''}<p>${esc(p.prof||'')}</p><p class="muted">${esc(info)}. ${h.length} ${h.length===1?'documento gerado':'documentos gerados'}${(p.recibos||[]).length?`, ${(p.recibos||[]).length} ${(p.recibos||[]).length===1?'recibo':'recibos'}`:''}.</p></div>
       <div class="pa"><button class="btn" data-act="renova" data-id="${esc(p.id)}">Renovar</button><button class="btn ghost" data-act="novo" data-id="${esc(p.id)}">Novo contrato</button>
       <button class="btn ghost danger" data-act="del" data-id="${esc(p.id)}">${S.del===p.id?'Confirmar exclusão':'Excluir'}</button></div></article>`; }).join(''); }
 async function pacAction(e){ const b=e.target.closest('button[data-act]'); if(!b) return; const id=b.dataset.id, act=b.dataset.act;
@@ -535,7 +586,7 @@ async function download(){
   const btn=$('#dl'); btn.disabled=true; const old=btn.textContent; btn.textContent='Gerando PDF…';
   try{
     const buf=makePDF(blocks,tipo);
-    const nome=S.f.nome.trim(); const fn=(tipo==='contrato'?'Contrato ':'Renovação Contrato ')+nome+'.pdf';
+    const nome=nomeDupla({...S.f,nome:S.f.nome.trim(),nome2:S.f.nome2.trim()}); const fn=(tipo==='contrato'?'Contrato ':'Renovação Contrato ')+nome+'.pdf';
     if(!S.downloads){ toast('O download não funciona nesta visualização.'); return; }
     await S.downloads.save({filename:fn,data:buf});
     toast('PDF salvo. Agora é só subir no ZapSign ou gov.br.');
@@ -551,7 +602,7 @@ async function saveOnly(){
 async function savePatient(tipo){
   if(!S.col) return false; const f=S.f;
   const entry={tipo,plano:f.plano,mod:f.mod,data:f.data,hora:f.hora,valor:f.valor,avulso:f.avulso,pag:f.pag,meio:f.meio,nparc:f.nparc,cidade:f.cidade,dataAss:f.dataAss,geradoEm:Date.now()};
-  const data={nome:f.nome.trim(),prof:f.prof,cpf:f.cpf,rg:f.rg,end:f.end,atualizadoEm:Date.now()};
+  const data={atualizadoEm:Date.now(),dupla:!!f.dupla,resp:!!f.resp}; PF.forEach(k=>data[k]=(f[k]||'').trim());
   if((tipo==='aditivo'||!tipo)&&f.dataOrig) data.dataOrig=f.dataOrig;
   if(!tipo){ const last={plano:f.plano,mod:f.mod,valor:f.valor,avulso:f.avulso,pag:f.pag,meio:f.meio,nparc:f.nparc,cidade:f.cidade}; data.padrao=last; }
   try{
@@ -589,13 +640,14 @@ const MODR={online:'on-line',gyn:'presencial',rv:'presencial'};
 function rBuild(r){
   const miss=[]; const ph=l=>{miss.push(l); return `⟦${l}⟧`;}; const v=(x,l)=>(x&&String(x).trim())?String(x).trim():ph(l);
   const valor=money(r.valor); const valorTxt = valor?`**R$ ${fmt(valor)} (${reais(valor)})**`:`**${ph('valor')}**`;
-  const n = r.plano==='tri'?3:6, nT = n===3?'3 (três)':'6 (seis)', plano = r.plano==='tri'?'trimestral':'semestral';
+  const P=PLANOS[r.plano]||PLANOS.tri, nT=NEXT[P.n], planoN=P.nome;
   
   const onde = r.mod==='online'?'on-line':(r.mod==='rv'?'presencial em Rio Verde/GO':'presencial em Goiânia/GO');
   const ondeP = r.mod==='online'?'on-line':(r.mod==='rv'?'presenciais em Rio Verde/GO':'presenciais em Goiânia/GO');
   let desc, servico;
   if(r.tipo==='avulsa'){ desc=`à consulta nutricional ${onde} do dia **${r.dataCons?dBR(r.dataCons):ph('data da consulta')}**`; servico='Consulta com nutricionista'; }
-  else { desc=`ao plano nutricional ${plano} ${onde}, contratado em **${r.dataCt?dBR(r.dataCt):ph('data da contratação')}**`; servico=`Acompanhamento nutricional com ${nT} consultas com nutricionista`; }
+  else if(r.tipo==='consplano'){ desc=`à consulta nutricional ${onde} do dia **${r.dataCons?dBR(r.dataCons):ph('data da consulta')}**, parte do ${planoN} contratado em **${r.dataCt?dBR(r.dataCt):ph('data da contratação')}**`; servico='Consulta com nutricionista'; }
+  else { desc=`ao ${planoN} ${onde}, contratado em **${r.dataCt?dBR(r.dataCt):ph('data da contratação')}**`; servico=`Acompanhamento nutricional com ${nT} consultas com nutricionista`; }
   const pac=v(r.nome,'nome do paciente'), cpf=v(r.cpf,'CPF do paciente');
   let quem, favor='';
   if(r.outro){ quem=`**${v(r.pagNome,'nome de quem pagou')}**, inscrito(a) no CPF sob o nº ${v(r.pagCpf,'CPF de quem pagou')}`; favor=`, relativo ao atendimento de **${pac}**, inscrito(a) no CPF sob o nº ${cpf}`; }
@@ -609,7 +661,7 @@ function rBuild(r){
     {t:'lbl',x:'Forma de pagamento:'},{t:'p',x:FORMAS[r.forma]||FORMAS.pix},
     {t:'date',x:`${cid}/GO, ${r.dataEm?dExt(r.dataEm):ph('data de emissão')}.`}
   ];
-  B.push({t:'sig1',img:S.config.assinatura||null,lines:['**Mariana Oliveira Borges**','Nutricionista | CRN-1 nº 26082','CPF 025.814.411-43',end]});
+  B.push({t:'sig1',img:S.config.assinatura||null,lines:['**Mariana Oliveira Borges**','Nutricionista | CRN 1 26082','CPF 025.814.411-43',end]});
   return {blocks:B,miss:[...new Set(miss)],num,cid};
 }
 function renderRecibo(){
@@ -633,7 +685,7 @@ function rSync(){
   const r=S.r;
   $$('#rform [data-k]').forEach(el=>{ const k=el.dataset.k; if(el.type==='radio') el.checked=(el.value===r[k]); else if(el.type==='checkbox') el.checked=!!r[k]; else if(el.value!==String(r[k]??'')) el.value=r[k]??''; });
   if(!r.num){ r.num=String(nextNum()); $('#rNum').value=r.num; }
-  $('#rPag').hidden=!r.outro; $('#rAvulsa').hidden=r.tipo!=='avulsa'; $('#rPacote').hidden=r.tipo==='avulsa';
+  $('#rPag').hidden=!r.outro; $('#rAvulsa').hidden=r.tipo==='plano'; $('#rPacote').hidden=r.tipo==='avulsa';
   $('#rPacSel').value=S.rPacId||'';
 }
 function rInput(e){
@@ -644,14 +696,16 @@ function rInput(e){
     rSync(); renderRecibo();
 }
 function renderRecSelect(){ const sel=$('#rPacSel'); const list=[...S.pacientes].sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR'));
-  sel.innerHTML='<option value="">Paciente novo</option>'+list.map(p=>`<option value="${esc(p.id)}">${esc(p.nome||'Sem nome')}</option>`).join(''); sel.value=S.rPacId||''; $('#rPacWrap').hidden=!S.col; }
+  sel.innerHTML='<option value="">Paciente novo</option>'+list.map(p=>`<option value="${esc(p.id)}">${esc(nomeDupla(p)||'Sem nome')}</option>`).join(''); sel.value=S.rPacId||''; $('#rPacWrap').hidden=!S.col; }
 function rLoadPatient(id){
   S.rPacId=id||null; const keep={num:'',dataPag:todayISO(),dataEm:todayISO()};
   if(!id){ S.r=Object.assign(rBlank(),keep); }
   else { const p=S.pacientes.find(x=>x.id===id); if(!p) return; const h=p.historico||[]; const last=h[h.length-1]; const ctList=h.filter(x=>x.tipo==='contrato'); const lastCt=ctList[ctList.length-1];
     const lr=(p.recibos||[]).slice(-1)[0];
     S.r=Object.assign(rBlank(),{nome:p.nome||'',cpf:p.cpf||''},
-      last?{mod:last.mod,plano:last.plano,valor:last.valor||'',tipo:'plano',dataCt:last.dataAss||''}:{},
+      last?(()=>{ const porCons=last.pag==='pix'; const np=parseInt(last.nparc)||nConsultas(last.plano); const vt=money(last.valor);
+        return {mod:last.mod,plano:last.plano,tipo:porCons?'consplano':'plano',valor:porCons?(vt&&np?fmt(Math.round(vt/np*100)/100):''):(last.valor||''),dataCt:(lastCt&&lastCt.dataAss)||last.dataAss||''}; })():{},
+      p.resp&&p.respNome?{outro:true,pagNome:p.respNome,pagCpf:p.respCpf||''}:{},
       lr?{outro:!!lr.outro,pagNome:lr.pagNome||'',pagCpf:lr.pagCpf||'',forma:lr.forma||'pix'}:{}, keep);
   }
   rSync(); renderRecibo();
@@ -680,8 +734,8 @@ function renderRecibos(){
   const list=allRecibos().filter(r=>(r.pacNome||'').toLowerCase().includes(q)||pad(r.num).includes(q));
   if(!list.length){ box.innerHTML='<p class="empty">'+(allRecibos().length?'Nenhum recibo encontrado.':'Nenhum recibo emitido ainda.')+'</p>'; return; }
   box.innerHTML='<table class="rt"><thead><tr><th>Nº</th><th>Paciente</th><th>Referente a</th><th>Valor</th><th>Emitido em</th><th></th></tr></thead><tbody>'+list.map(r=>{
-    const ref = r.tipo==='avulsa'?'Consulta avulsa':`Plano ${r.plano==='sem'?'semestral':'trimestral'}`;
-    return `<tr><td>${pad(r.num)}</td><td>${esc(r.pacNome||'')}</td><td>${ref}</td><td>R$ ${fmt(money(r.valor))}</td><td>${r.dataEm?dBR(r.dataEm):''}</td><td><button class="btn ghost sm" data-num="${r.num}">Baixar de novo</button></td></tr>`; }).join('')+'</tbody></table>';
+    const PN=(PLANOS[r.plano]||PLANOS.tri).nome; const ref = r.tipo==='avulsa'?'Consulta avulsa':r.tipo==='consplano'?`Consulta do ${PN}`:PN.charAt(0).toUpperCase()+PN.slice(1);
+    return `<tr><td>${pad(r.num)}</td><td>${esc(r.pacNome||'')}</td><td>${ref}</td><td>R$ ${fmt(money(r.valor))}</td><td>${r.dataEm?dBR(r.dataEm):''}</td><td class="ra"><button class="btn ghost sm" data-num="${r.num}">Baixar de novo</button><button class="btn ghost sm danger" data-del="${r.num}">${S.rDel===r.num?'Confirmar':'Apagar'}</button></td></tr>`; }).join('')+'</tbody></table>';
 }
 function fillCfg(){ const c=S.config; $('#cIni').value=c.numInicial||'';
   const im=$('#cSigPrev'); if(c.assinatura){ im.src=c.assinatura; im.hidden=false; $('#cSigDel').hidden=false; } else { im.hidden=true; $('#cSigDel').hidden=true; } }
@@ -698,7 +752,11 @@ $('#rPacSel').addEventListener('change',e=>rLoadPatient(e.target.value));
 $('#rdl').addEventListener('click',()=>rDownload());
 $('#rlimpar').addEventListener('click',()=>rLoadPatient(''));
 $('#rBusca').addEventListener('input',renderRecibos);
-$('#rList').addEventListener('click',e=>{ const b=e.target.closest('button[data-num]'); if(!b) return; const r=allRecibos().find(x=>x.num===parseInt(b.dataset.num)); if(r) rDownload(r); });
+$('#rList').addEventListener('click',async e=>{ const dbt=e.target.closest('button[data-del]');
+  if(dbt){ const num=parseInt(dbt.dataset.del); if(S.rDel!==num){ S.rDel=num; renderRecibos(); return; } S.rDel=null;
+    const r=allRecibos().find(x=>x.num===num); const p=r&&S.pacientes.find(x=>x.id===r.pacId); if(!p) return;
+    try{ await S.col.doc(p.id).update({recibos:(p.recibos||[]).filter(x=>x.num!==num)}); toast(`Recibo nº ${pad(num)} apagado.`); }catch(err){ toast('Não foi possível apagar o recibo.'); } return; }
+  const b=e.target.closest('button[data-num]'); if(!b) return; const r=allRecibos().find(x=>x.num===parseInt(b.dataset.num)); if(r) rDownload(r); });
 $('#cSave').addEventListener('click',()=>saveCfg({numInicial:$('#cIni').value.trim()}));
 $('#cSig').addEventListener('change',async e=>{ const f=e.target.files[0]; e.target.value=''; if(!f) return; try{ const d=await loadSig(f); await saveCfg({assinatura:d}); }catch(err){ toast('Não consegui ler essa imagem. Tente um PNG ou JPG.'); } });
 $('#cSigDel').addEventListener('click',()=>saveCfg({assinatura:''}));
