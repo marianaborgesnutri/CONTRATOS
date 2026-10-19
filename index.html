@@ -144,8 +144,10 @@ summary{cursor:pointer;font:italic 400 19px Lora,Georgia,serif;color:var(--green
   </nav>
   <button type="button" class="btn ghost" id="sair" hidden>Sair</button>
 </header>
+<p id="boot" class="status" style="max-width:520px;margin:40px auto">Conectando ao banco de dados…</p>
 <section id="login" hidden>
   <h2>Entrar</h2>
+  <div id="dbOff" hidden><p class="status warn" id="dbOffMsg"></p><button type="button" class="btn" id="tentar" style="margin:10px 0 18px">Tentar de novo</button></div>
   <form id="loginForm"><label class="f">E-mail<input id="email" type="email" autocomplete="username" required></label>
   <label class="f">Senha<input id="senha" type="password" autocomplete="current-password" required></label>
   <button class="btn" id="entrar" type="submit">Entrar</button><button type="button" class="linkbtn" id="esqueci">Esqueci minha senha</button></form>
@@ -785,11 +787,11 @@ S.downloads={save:async({filename,data})=>{ const type=filename.endsWith('.json'
   const url=URL.createObjectURL(new Blob([data],{type})); const a=document.createElement('a'); a.href=url; a.download=filename;
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),4000); return {status:'saved'}; }};
 const TAB='pacientes';
-function showLogin(msg){ $('#login').hidden=false; $('#app').hidden=true; $('#sair').hidden=true; $('#loginMsg').textContent=msg||''; }
-async function showApp(){ $('#login').hidden=true; $('#app').hidden=false; $('#sair').hidden=false; await loadPacientes(); }
+function showLogin(msg){ $('#boot').hidden=true; $('#login').hidden=false; $('#app').hidden=true; $('#sair').hidden=true; $('#loginMsg').textContent=msg||''; }
+async function showApp(){ $('#boot').hidden=true; $('#login').hidden=true; $('#app').hidden=false; $('#sair').hidden=false; await loadPacientes(); }
 async function loadPacientes(){
   const {data,error}=await S.sb.from(TAB).select('id,dados').order('created_at',{ascending:true});
-  if(error){ toast('Não foi possível carregar os pacientes: '+error.message); return; }
+  if(error){ toast(/fetch|network|timeout|50\d|540/i.test(error.message)?'Sem conexão com o banco de dados. Se persistir, ele pode estar pausado no Supabase (Restore project).':'Não foi possível carregar os pacientes: '+error.message); return; }
   setRows(data.map(r=>({id:r.id,...(r.dados||{})})));
 }
 function makeCol(){ return {doc:(id)=>{ const rid=id||crypto.randomUUID(); return {id:rid,
@@ -803,14 +805,28 @@ syncForm(); renderPreview();
     showLogin(''); $('#loginForm').hidden=true; $('#cfgErr').hidden=false; return; }
   S.sb=window.supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_KEY); S.col=makeCol();
   S.sb.auth.onAuthStateChange((ev,session)=>{
-    if(ev==='PASSWORD_RECOVERY'){ $('#login').hidden=false; $('#app').hidden=true; $('#loginForm').hidden=true; $('#novaSenhaForm').hidden=false; return; }
+    if(ev==='PASSWORD_RECOVERY'){ $('#boot').hidden=true; $('#login').hidden=false; $('#app').hidden=true; $('#loginForm').hidden=true; $('#novaSenhaForm').hidden=false; return; }
     if(ev==='SIGNED_OUT') showLogin();
   });
-  const {data:{session}}=await S.sb.auth.getSession();
-  if(session && !location.hash.includes('type=recovery')) showApp(); else if(!location.hash.includes('type=recovery')) showLogin();
+  /* O plano gratuito do Supabase pausa o banco sem uso. Pausado, ele não responde: antes o site ficava em branco esperando.
+     Agora testamos o banco primeiro (máx. 8 s) e, se estiver dormindo, avisamos com clareza. */
+  const DB_OFF='O banco de dados está dormindo (o Supabase pausa projetos gratuitos sem uso). Entre em supabase.com, abra o projeto e clique em "Restore project". Espere 1 a 2 minutos e toque em "Tentar de novo".';
+  const avisoOff=()=>{ $('#dbOffMsg').textContent=DB_OFF; $('#dbOff').hidden=false; };
+  async function bancoOnline(){
+    const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(),8000);
+    try{ const r=await fetch(cfg.SUPABASE_URL+'/auth/v1/health',{headers:{apikey:cfg.SUPABASE_KEY},signal:ctl.signal,cache:'no-store'}); return r.ok; }
+    catch(e){ return false; } finally{ clearTimeout(t); }
+  }
+  const semRede=m=>/fetch|network|timeout|abort|failed|50\d|540/i.test(m||'');
+  $('#tentar').addEventListener('click',()=>location.reload());
+  const recuperando=location.hash.includes('type=recovery');
+  if(!(await bancoOnline())){ showLogin(''); $('#loginForm').hidden=true; avisoOff(); return; }
+  let session=null;
+  try{ ({data:{session}}=await Promise.race([S.sb.auth.getSession(), new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),10000))])); }catch(e){ session=null; }
+  if(!recuperando){ if(session) showApp(); else showLogin(); }
   $('#loginForm').addEventListener('submit',async e=>{ e.preventDefault(); const b=$('#entrar'); b.disabled=true; $('#loginMsg').textContent='';
-    const {error}=await S.sb.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#senha').value});
-    b.disabled=false; if(error){ $('#loginMsg').textContent = /invalid/i.test(error.message)?'E-mail ou senha incorretos.':'Não foi possível entrar: '+error.message; return; }
+    let error=null; try{ ({error}=await S.sb.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#senha').value})); }catch(err){ error=err; }
+    b.disabled=false; if(error){ if(semRede(error.message)){ avisoOff(); $('#loginMsg').textContent=''; return; } $('#loginMsg').textContent = /invalid/i.test(error.message)?'E-mail ou senha incorretos.':'Não foi possível entrar: '+error.message; return; }
     $('#senha').value=''; showApp(); });
   $('#esqueci').addEventListener('click',async()=>{ const email=$('#email').value.trim(); if(!email){ $('#loginMsg').textContent='Digite seu e-mail acima e clique de novo em "Esqueci minha senha".'; return; }
     const {error}=await S.sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});
