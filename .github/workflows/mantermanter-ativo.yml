@@ -1,18 +1,40 @@
 # Mantém o projeto do Supabase ativo (o plano gratuito pausa depois de ~7 dias sem uso).
-# Roda sozinho a cada 3 dias. Também dá para rodar na mão em Actions > Manter Supabase ativo > Run workflow.
+# Roda sozinho todo dia (08:17 no horário de Brasília). Também dá para rodar na mão:
+# Actions > Manter Supabase ativo > Run workflow.
+#
+# Se algum passo falhar (por exemplo, banco já pausado), o workflow fica VERMELHO e o GitHub manda e-mail.
 name: Manter Supabase ativo
 
 on:
   schedule:
-    - cron: "0 12 */3 * *"
+    - cron: "17 11 * * *"
   workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
+    env:
+      SB_URL: https://yjuorotwwytjjadwwbrr.supabase.co
+      SB_KEY: sb_publishable_-yYYT8OwH8CotGE0RAC--g_CzOuM0KN
+      # OPCIONAL (passo 2): crie estes dois "Secrets" em Settings > Secrets and variables > Actions
+      KA_EMAIL: ${{ secrets.KEEPALIVE_EMAIL }}
+      KA_SENHA: ${{ secrets.KEEPALIVE_SENHA }}
     steps:
-      - name: Acessar o banco
+      - name: 1) Consultar o banco (tabela pacientes)
         run: |
-          curl -s -o /dev/null -w "Resposta do Supabase: %{http_code}\n" \
-            "https://yjuorotwwytjjadwwbrr.supabase.co/rest/v1/pacientes?select=id&limit=1" \
-            -H "apikey: sb_publishable_-yYYT8OwH8CotGE0RAC--g_CzOuM0KN"
+          code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 30 --retry 3 --retry-delay 10 \
+            "$SB_URL/rest/v1/pacientes?select=id&limit=1" -H "apikey: $SB_KEY")
+          echo "Consulta ao banco: HTTP $code"
+          case "$code" in 2*) ;; *) echo "::error::O Supabase não respondeu direito (HTTP $code). Provavelmente está pausado: abra supabase.com e clique em Restore project."; exit 1;; esac
+
+      - name: 2) Entrar de verdade no sistema (opcional, mais forte)
+        run: |
+          if [ -z "$KA_EMAIL" ] || [ -z "$KA_SENHA" ]; then echo "Secrets KEEPALIVE_EMAIL/KEEPALIVE_SENHA não configurados: passo pulado."; exit 0; fi
+          body=$(jq -n --arg e "$KA_EMAIL" --arg p "$KA_SENHA" '{email:$e,password:$p}')
+          token=$(curl -sS --fail --max-time 30 "$SB_URL/auth/v1/token?grant_type=password" \
+            -H "apikey: $SB_KEY" -H "Content-Type: application/json" -d "$body" | jq -r .access_token)
+          [ -n "$token" ] && [ "$token" != "null" ] || { echo "::error::Login do keep-alive falhou."; exit 1; }
+          code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 30 \
+            "$SB_URL/rest/v1/pacientes?select=id&limit=1" -H "apikey: $SB_KEY" -H "Authorization: Bearer $token")
+          echo "Consulta logada: HTTP $code"
+          case "$code" in 2*) ;; *) echo "::error::Consulta logada falhou (HTTP $code)."; exit 1;; esac
